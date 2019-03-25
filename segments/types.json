@@ -23,9 +23,4 @@
     "id": "text",
     "storage": "json",
     "type": "dynamic editable"
-},{
-    "name": "Текст",
-    "id": "textasa",
-    "storage": "json",
-    "type": "dynamic editable"
 }]
