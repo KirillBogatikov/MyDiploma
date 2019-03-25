@@ -7,6 +7,9 @@
         
         function __construct($path) {
             $this->path = $path;
+            if($this->isDirectory() && substr($this->path, -1) != "/" && substr($this->path, -1) != "\\") {
+            	$path .= "/";
+            }
         }
 
         /*
@@ -27,17 +30,13 @@
          * Вернет список файлов и папок, находящихся в папке, связанную с данным объектом
          * Либо NULL, если объект связан с файлом
          */
-        function listFiles($wrap=false) {
+        function listFiles($wrap=false, $pattern="*") {
             if(!$this->isDirectory()) {
                 return null;
             }
 
             $path = $this->path;
-            if(substr($this->path, -1) != "/" && substr($this->path, -1) != "\\") {
-                $path .= "/";
-            }
-           
-            $result = glob($path."*");
+            $result = glob($path.$pattern);
             if(!$wrap) {
                 return $result;
             }
@@ -47,6 +46,30 @@
                 $result[$i] = new File($result[$i]);
             }
             return $result;
+        }
+        
+        /**
+         * Вернет список имен файлов и папок, находящихся в папке, связанной с данным объектом
+         * Либо NULL, если объект связан с файлом
+         * 
+         * @param string $pattern шаблон имен файлов и подпапок
+         * @param string $withext если true список будет содержать имена включая расширения файлов, иначе - только имя файла
+         * @return NULL|array список имен вложенный файлов или папок, либо NULL если списко получить не удалось (объект указывает на файл) 
+         */
+        function listNames($pattern="*", $withext=true) {
+        	if(!$this->isDirectory()) {
+        		return null;
+        	}
+        	
+        	$path = $this->path;
+        	$result = glob($path.$pattern);
+        	
+        	$count = count($result);
+        	for($i = 0; $i < $count; $i++) {
+        		$file = new File($result[$i]);
+        		$result[$i] = $file->getName($withext);
+        	}
+        	return $result;
         }
 
         /*
@@ -103,14 +126,17 @@
         /*
          * Вернет имя файла или папки, связанной с данным объектом   
         */
-        function getName() {
+        function getName($withext=true) {
             $index = strrpos($this->path, "/");
             if(!$index) {
                 $index = strrpos($this->path, "\\");
             }
-
-            echo $this->path.":".$index.":".substr($this->path, $index + 1, strlen($this->path))."\n";
-            return substr($this->path, $index + 1, strlen($this->path));
+            
+            $name = substr($this->path, $index + 1, strlen($this->path));
+            if($this->isFile() && !$withext) {
+            	$name = substr($name, 0, strrpos($name, "."));
+            }
+            return $name;
         }
 
         /*
