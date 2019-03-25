@@ -7,11 +7,15 @@
 		define($name, $val);
 	}
 
+	define("SEGMENTS_DIR", "../segments/");	
+	define("TYPES_LIST_PATH", SEGMENTS_DIR."types.json");
+	
 	defConst("AUTH_COOKIE_ID", "id");
 	defConst("AUTH_COOKIE_HASH", "hash");
 	
 	defConst("RFC_FAIL", 0x00);
 	defConst("RFC_SUCCESS", 0x01);
+	defConst("RFC_NOT_FOUND", 0x02);
 	
 	defConst("AUTH_NO_COOKIE", 0x10);
 	defConst("AUTH_NO_USER", 0x11);

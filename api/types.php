@@ -1,6 +1,6 @@
 <?php
-	define("TYPES_LIST_PATH", "../segments/types.json");
-	
+	include_once "const.php";
+
 	function listTypes() {
 		$types = file_get_contents(TYPES_LIST_PATH);
 		$types = json_decode($types);
