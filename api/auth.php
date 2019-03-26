@@ -66,6 +66,10 @@
 				$mysql->query("SELECT id FROM @users WHERE login='$login'");
 				$user = $mysql->toObject();
 				setAuthCookie($user->id, $hash);
+				
+				$dir = new File("../users/".($user->id)."/");
+				$dir->mkdir();
+				
 				return RFC_SUCCESS;
 			} else {
 				return USER_LOGIN_BUSY;	
