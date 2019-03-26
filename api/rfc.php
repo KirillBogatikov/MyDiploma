@@ -50,8 +50,23 @@
 		}
 	} else if(isset($_GET["const"])) {
 		$response["body"] = $_CONST;
-	} else if(isset($_GET[""])) {
+	} else if(isset($_GET["segments"])) {
+		include_once "segments.php";
 		
+		switch($_POST["method"]) {
+			case "list":
+				$response["body"] = listSegments($_POST["id"], $_POST["offset"], $_POST["length"]);
+			break;
+			case "load":
+				loadSegment($_POST["type"], $_POST["uid"], $_POST["width"], $_POST["height"]);
+			break;
+			case "upload":
+				$response["code"] = uploadSegment($_POST["type"], $_FILES["image"], isset($_POST["uid"]) ? $_POST["uid"] : -1);
+			break;
+			case "remove":
+				$response["code"] = removeSegment($_POST["type"], $_POST["uid"]);
+			break;
+		}
 	}
 	
 	echo json_encode($response);
