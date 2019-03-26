@@ -3,6 +3,7 @@
 	include_once "types.php";
 	include_once "files.php";
 	include_once "auth.php";
+	include_once "tools.php";
 	
 	function listSegments($type, $offset, $length) {
 		$types = listTypes();
