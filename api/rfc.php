@@ -67,6 +67,16 @@
 				$response["code"] = removeSegment($_POST["type"], $_POST["uid"]);
 			break;
 		}
+	} else if(isset($_GET["config"])) {
+		include_once "config.php";
+		
+		switch($_POST["method"]) {
+			case "create": $response["code"] = createCfg(); break;	
+			case "load": $response["body"] = loadCfg($_POST["uid"]); break;
+			case "save": $response["body"] = saveCfg($_POST["uid"], $_POST["config"]); break;
+			case "remove": $response["code"] = removeCfg($_POST["uid"]); break;
+			case "list": $response["body"]  = listCfg(); break;
+		}
 	}
 	
 	echo json_encode($response);
