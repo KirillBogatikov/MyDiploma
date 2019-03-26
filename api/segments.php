@@ -2,6 +2,7 @@
 	include_once "const.php";
 	include_once "types.php";
 	include_once "files.php";
+	include_once "auth.php";
 	
 	function listSegments($type, $offset, $length) {
 		$types = listTypes();
@@ -36,6 +37,10 @@
 	}
 	
 	function uploadSegment($type, $file, $uid=-1) {
+		if(!checkAccess()) {
+			return ACCESS_DENIED;
+		}
+		
 		if($uid == -1) {
 			$uid = uniqidReal();
 		}
@@ -48,6 +53,10 @@
 	}
 	
 	function removeSegment($type, $uid) {
+		if(!checkAccess()) {
+			return ACCESS_DENIED;
+		}
+		
 		$file = new File(findPathToSegment($type, $uid));
 		if(!$file->exists()) {
 			return RFC_NOT_FOUND;

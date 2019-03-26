@@ -42,4 +42,7 @@
 	defConst("USER_SURNAME_PATTERN", "/^[a-zA-Zа-яА-Я]+$/u");
 	defConst("USER_SURNAME_MIN", 1);
 	defConst("USER_SURNAME_MAX", 32);
+	
+	defConst("ACCESS_DENIED", 0x30);
+	
 ?>
