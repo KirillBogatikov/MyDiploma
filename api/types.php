@@ -33,20 +33,20 @@
 		return RFC_SUCCESS;
 	}
 	
-	function editType($id, $name=NOT_CHANGED, $storage=NOT_CHANGED, $type=NOT_CHANGED) {
+	function editType($id, $name=FIELD_NOT_CHANGED, $storage=FIELD_NOT_CHANGED, $type=FIELD_NOT_CHANGED) {
 		$origin = listTypes();
 		$key = searchType($id, $origin);
 		if($key == -1) {
 			return RFC_NOT_FOUND;
 		}
 	
-		if($name != NOT_CHANGED) {
+		if($name != FIELD_NOT_CHANGED) {
 			$origin[$key]->name = $name;
 		}
-		if($storage != NOT_CHANGED) {
+		if($storage != FIELD_NOT_CHANGED) {
 			$origin[$key]->$storage = $storage;
 		}
-		if($type != NOT_CHANGED) {
+		if($type != FIELD_NOT_CHANGED) {
 			$origin[$key]->$type = $type;
 		}
 		file_put_contents(TYPES_LIST_PATH, json_encode($origin));
