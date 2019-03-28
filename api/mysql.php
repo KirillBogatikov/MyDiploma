@@ -37,6 +37,14 @@
 			return $this->toObject()[$key];
 		}
 		
+		function allRows() {
+			$result = array();
+			for($i = 0; $i < $this->result->num_rows; $i++) {
+				$result[] = $this->toObject();
+			}
+			return $result;
+		}
+		
 		function __destruct() {
 			$this->mysql->close();
 		}
