@@ -17,6 +17,7 @@
 	defConst("RFC_SUCCESS", 0x01);
 	defConst("RFC_NOT_FOUND", 0x02);
 	defConst("RFC_EXISTS", 0x03);
+	defConst("FIELD_NOT_CHANGED", null);
 	
 	defConst("AUTH_NO_COOKIE", 0x10);
 	defConst("AUTH_NO_USER", 0x11);

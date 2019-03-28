@@ -67,7 +67,9 @@
 				$user = $mysql->toObject();
 				setAuthCookie($user->id, $hash);
 				
-				$dir = new File("../users/".($user->id)."/");
+				$dir = new File("../users/".($user->id)."/configs/");
+				$dir->mkdir();
+				$dir = new File("../users/".($user->id)."/uploads/");
 				$dir->mkdir();
 				
 				return RFC_SUCCESS;
