@@ -40,9 +40,9 @@
 			break;
 			case "edit": 
 				$response["code"] = editType($_POST["id"], 
-					isset($_POST["name"]) ? $_POST["name"] : NOT_CHANGED,
-					isset($_POST["storage"]) ? $_POST["storage"] : NOT_CHANGED,
-					isset($_POST["type"]) ? $_POST["type"] : NOT_CHANGED);
+					isset($_POST["name"]) ? $_POST["name"] : FIELD_NOT_CHANGED,
+					isset($_POST["storage"]) ? $_POST["storage"] : FIELD_NOT_CHANGED,
+					isset($_POST["type"]) ? $_POST["type"] : FIELD_NOT_CHANGED);
 			break;
 			case "remove": 
 				$response["code"] = removeType($_POST["id"]); 
@@ -77,6 +77,24 @@
 			case "remove": $response["code"] = removeCfg($_POST["uid"]); break;
 			case "list": $response["body"]  = listCfg(); break;
 		}
+	} else if(isset($_GET["user"])) {
+		include_once "user.php";
+		
+		switch($_POST["method"]) {
+			case "exists": $response["code"] = isUserExists($_POST["login"]); break;
+			case "read": $response["body"] = readUser(isset($_POST["id"]) ? $_POST["id"] : currentID()); break;
+			case "save": $response["body"] = saveUser(
+				isset($_POST["login"]) ? $_POST["login"] : FIELD_NOT_CHANGED,
+				isset($_POST["old_password"]) ? $_POST["old_password"] : FIELD_NOT_CHANGED,
+				isset($_POST["new_password"]) ? $_POST["new_password"] : FIELD_NOT_CHANGED,
+				isset($_POST["name"]) ? $_POST["name"] : FIELD_NOT_CHANGED,
+				isset($_POST["surname"]) ? $_POST["surname"] : FIELD_NOT_CHANGED
+			); break;
+			case "delete": $response["body"] = deleteUser(isset($_POST["id"]) ? $_POST["id"] : currentID()); break;
+			case "configs": $response["body"] = listConfigs(isset($_POST["id"]) ? $_POST["id"] : currentID()); break;
+			case "uploads": $response["body"] = listUploads(isset($_POST["id"]) ? $_POST["id"] : currentID()); break;
+			case "list": $response["body"] = listUsers($_POST["params"]); break;
+		} 
 	}
 	
 	echo json_encode($response);
