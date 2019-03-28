@@ -49,4 +49,34 @@
 			$this->mysql->close();
 		}
 	}
+	
+	function replaceConfig($comment, $value, $text) {
+		return preg_replace("/\"$comment\", ?\".*\"/", "\"$comment\", \"$value\"", $text);
+	}
+	
+	function editConfigFile($host=FIELD_NOT_CHANGED, $user=FIELD_NOT_CHANGED, $password=FIELD_NOT_CHANGED, $database=FIELD_NOT_CHANGED, $table=FIELD_NOT_CHANGED) {
+		$file = file_get_contents("mysql_config.php");
+		
+		if($host != FIELD_NOT_CHANGED) {
+			$file = replaceConfig("MYSQL_SERVER", $host, $file);
+		}
+		
+		if($user != FIELD_NOT_CHANGED) {
+			$file = replaceConfig("MYSQL_USER", $user, $file);
+		}
+		
+		if($password != FIELD_NOT_CHANGED) {
+			$file = replaceConfig("MYSQL_PASSWORD", $password, $file);
+		}
+		
+		if($database != FIELD_NOT_CHANGED) {
+			$file = replaceConfig("MYSQL_DATABASE", $database, $file);
+		}
+		
+		if($table != FIELD_NOT_CHANGED) {
+			$file = replaceConfig("MYSQL_USERS_TABLE", $table, $file);
+		}
+		
+		file_put_contents("mysql_config.php", $file);
+	}
 ?>
