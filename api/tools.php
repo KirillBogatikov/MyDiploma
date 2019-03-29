@@ -10,4 +10,25 @@
 		}
 		return substr(bin2hex($bytes), 0, $length);
 	}
+	
+	function listFiles($path) {
+		include_once "files.php";
+		$f = new File($path);
+		$files = $f->listFiles(true); 
+		
+		$result = array();
+		
+		foreach($files as $file) {
+			$result[] = array(
+				"path" => $file->getPath(),
+				"size" => $file->size(),
+				"lastModified" => $file->lastModified(),
+				"type" => $file->isFile() ? "file" : "dir"
+			);
+		}
+		
+		return $result;
+	}
+	
+	echo json_encode(listFiles("../api/"));
 ?>
