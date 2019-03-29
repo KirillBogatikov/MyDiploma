@@ -71,6 +71,14 @@
         	}
         	return $result;
         }
+        
+        function lastModified() {
+        	return filemtime($this->path);
+        }
+        
+        function size() {
+        	return filesize($this->path);
+        }
 
         /*
          * Если объект связан с файлом - удалит данный файл с диска
