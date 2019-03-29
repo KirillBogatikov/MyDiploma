@@ -100,10 +100,15 @@
 	}
 	
 	function signout() {
+		if(currentRole() == USER_ROLE_GUEST) {
+			return ACCESS_DENIED;
+		}
+		
 		unset($_COOKIE[AUTH_COOKIE_ID]);
 		unset($_COOKIE[AUTH_COOKIE_HASH]);
 		setcookie(AUTH_COOKIE_ID, "", time() - 3600, "/");
 		setcookie(AUTH_COOKIE_HASH, "", time() - 3600, "/");
+		return RFC_SUCCESS;
 	}
 	
 	function checkAccess($level=USER_ROLE_ADMIN) {
