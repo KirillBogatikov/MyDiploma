@@ -1,0 +1,51 @@
+@CHARSET "UTF-8";
+
+HTML {
+    height: 100%;
+}
+
+HTML, BODY {
+	padding: 0px;
+	margin: 0px;
+}
+
+* {
+	outline: 0;
+}
+
+BODY {
+	background: #FCF0BD;
+    color: #120A8F;
+    height: 100%;
+}
+
+#header {
+	width: 99%;
+	height: 7%;
+    max-height: 75px;
+    padding: 0.5%;
+	
+    background: #FDD212;
+    box-shadow: 0px 0px 10px black;
+    
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 10;
+}
+
+#header-control-guest, #header-control-user {
+	display: none;
+    float: right;
+}
+
+.header-control {
+	height: 100%;
+	float: right;
+	padding-left: 20px;
+	display: none;
+}
+
+#content {
+	position: relative;
+}

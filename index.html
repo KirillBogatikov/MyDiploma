@@ -1,0 +1,121 @@
+<!DOCtype html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <title>MyDiploma</title>
+        <meta name="description" content="Сервис для создания дипломов, грамот, открыток, благодарственных писем">
+        <meta name="keywords" content="Дипломы, грамоты, письма, открытки, maker, diploma, charter, letter">
+        <link rel="stylesheet" href="css/common.css"/>
+        <link rel="stylesheet" href="css/index.css"/>
+        <link rel="stylesheet" href="css/auth_ui.css"/>
+        <link rel="shortcut icon" href="img/favicon.ico"/>
+    </head>
+    <body>
+        <div id="controls">
+            <a href="/workbench"><img alt="Add" src="/img/tools/add.png"/></a>
+            <div id="header-control-guest">
+            	<a href="#signup"><img alt="Sign up" src="/img/user/sign_up.png"/></a>
+            	<a href="#signin"><img alt="Sign in" src="/img/user/sign_in.png"/></a>
+	        </div>
+	        <div id="header-control-user">
+            	<a href="#signout"><img alt="Sign out" src="/img/user/sign_out.png"/></a>
+            	<a href="/user"><img alt="Your account" src="/img/user/user.png"/></a>
+	        </div>
+	        <a href="#down"><img alt="Move to page bottom" src="/img/arrow.png"/></a>
+		</div>
+		<div id="contacts">
+            <a href="https://vk.com/kirill.bogatikov"><img src="/img/contact/vk.png"/></a>
+            <a href="http://kirillbogatikov.github.io"><img src="/img/contact/web.png"/></a>
+            <a href="https://facebook.com/kirill.bogatikov"><img src="/img/contact/facebook.png"/></a>
+            <a href="https://t.me/kirillbogatikov"><img src="/img/contact/telegram.png"/></a>
+            <a href="mailto:kivi15penza@gmail.com"><img src="/img/contact/email.png"/></a>
+        </div>
+        <div id="landing">
+            <img id="logo" alt="My Diploma logo" src="/img/logo.png"/>
+            <div id="welcome">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+        </div>
+		<div id="content">
+            <div class="text" id="service" style="display:inline-block;width:59%">
+              	<h1>О сервисе</h1>
+              	Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed justo commodo, porta enim quis, faucibus mi. Ut accumsan tortor sed dapibus tincidunt. Cras pharetra arcu at lectus dictum, id mollis justo auctor. Etiam fermentum, sem vitae mattis dapibus, ex ligula lacinia libero, ac venenatis diam tellus a nulla. Proin venenatis, libero eu eleifend facilisis, est ipsum aliquam turpis, in volutpat libero mi quis felis. Duis placerat mollis nulla, at efficitur massa rutrum quis. Praesent ac leo ut erat hendrerit viverra. Vestibulum sit amet turpis et eros gravida interdum. Donec auctor urna elit, rutrum commodo nibh fringilla sed. Fusce dignissim lacus et rutrum condimentum.
+				Mauris mollis fringilla pretium. Sed tempor non dui sit amet pretium. Sed consequat lacus in arcu ornare, ullamcorper interdum sapien tempor. Etiam efficitur dapibus turpis, ut ultrices libero euismod eu. Aenean quis ex a sem egestas dictum ac id mauris. Proin varius ligula eros, ornare molestie erat auctor sit amet. Vestibulum pharetra nec tortor eu pulvinar. Maecenas dapibus est iaculis, interdum est at, sodales ante. Aenean tincidunt risus sem, id pulvinar purus mattis sit amet. Praesent a consectetur lorem.
+            </div>
+            <img class="icon"  style="display:inline-block;width:40%" src="/img/adv/examples.png"/>
+            
+            <div class="section" id="author">
+                <h1>Об авторе</h1>
+                <p>А кому мы хотим сказать &quot;Спасибо&quot; за такой сайт? Мне! А кто я?</p>
+                <p>А я вполне себе обычный студент Пензенского колледжа информационных и промышленных технологий. И родом я из небольшого красивого города Пенза, мне всего 18 годиков, а за спиной уже 6 лет разработки различного ПО.</p>
+                <p>Буду рад, если Вы оставите отзыв о работе сервиса или даже предложите что-то новенькое и я обязательно рассмотрю Ваше предложение и учту мнение! Мне важен отклик моих клиентов!</p>
+                
+            </div>
+		</div>
+        <script src="js/jquery.js"></script>
+        <script>
+	        $.ajax({
+				type: "post",
+				url: "/api/rfc.php?const",
+				dataType: "json",
+				async: false
+			}).done(function(response) {
+				for(var i in response.body) {
+					window[i] = response.body[i];
+				}
+			});
+			
+        	$(document).ready(function() {
+            	$("#content").css("margin-top", $("#header").outerHeight(true) + 10); 
+        		$.ajax({
+					type: "post",
+					url: "/api/rfc.php?auth",
+					dataType: "json",
+					data: {
+						method: "role"
+					}
+				}).done(function(response) {
+					console.log(response);
+					if(response.body == USER_ROLE_GUEST) {
+						$("#header-control-guest").fadeIn();
+					} else {
+						$("#header-control-user").fadeIn();
+					}
+				});
+        	});
+
+        	$("a[href^=#]").on("click", function(event) {
+				event.preventDefault();
+
+				process(this.href);
+        	});
+
+        	if(location.hash)
+            	process(location.hash);
+
+        	function process(h) {
+        		var data = {};
+				if(h.endsWith("signin")) {
+					data = {
+						method: "signin",
+						login: prompt("Login:"),
+						password: prompt("Password:")
+					}; 
+				} else if(h.endsWith("signout")) {
+					data.method = "signout";
+				}
+
+				$.ajax({
+					type: "post",
+					url: "/api/rfc.php?auth",
+					data: data,
+					dataType: "json"
+				}).done(function(response) {
+					if(response.code == RFC_SUCCESS) {
+						alert("Ok!");
+					} else {
+						console.log(response);
+					}
+				}); 
+        	}
+        </script>
+    </body>
+</html>
