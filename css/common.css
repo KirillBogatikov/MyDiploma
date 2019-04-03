@@ -1,5 +1,15 @@
 @CHARSET "UTF-8";
 
+@font-face {
+    font-family: Stylo;
+    src: url("../fonts/Stylo.ttf");
+}
+
+@font-face {
+    font-family: Gagalin;
+    src: url("../fonts/gagalin.otf");
+}
+
 HTML {
     height: 100%;
 }

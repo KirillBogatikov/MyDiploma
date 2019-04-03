@@ -18,8 +18,8 @@
             	<a href="#signin"><img alt="Sign in" src="/img/user/sign_in.png"/></a>
 	        </div>
 	        <div id="header-control-user">
+                <a href="/user"><img alt="Your account" src="/img/user/user.png"/></a>
             	<a href="#signout"><img alt="Sign out" src="/img/user/sign_out.png"/></a>
-            	<a href="/user"><img alt="Your account" src="/img/user/user.png"/></a>
 	        </div>
 	        <a href="#down"><img alt="Move to page bottom" src="/img/arrow.png"/></a>
 		</div>
@@ -31,8 +31,14 @@
             <a href="mailto:kivi15penza@gmail.com"><img src="/img/contact/email.png"/></a>
         </div>
         <div id="landing">
-            <img id="logo" alt="My Diploma logo" src="/img/logo.png"/>
-            <div id="welcome">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+            <img id="splash-1" class="splash" src="/img/splash/1.png"/>
+            <img id="splash-2" class="splash" src="/img/splash/1.png"/>
+            <div id="splash-shadow" class="splash"></div>
+            <div id="logo">
+                <span style="font-size:200%;font-family:Gagalin">MY</span>
+                <span style="margin-left:-25pt;font-family:Stylo">diploma</span>
+            </div>
+            <div id="welcome">Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
         </div>
 		<div id="content">
             <div class="text" id="service" style="display:inline-block;width:59%">
@@ -64,8 +70,22 @@
 			});
 			
         	$(document).ready(function() {
-            	$("#content").css("margin-top", $("#header").outerHeight(true) + 10); 
-        		$.ajax({
+        		$("#splash-shadow").height($("#splash-1").height());
+        		
+        		var e = 2;
+        		an_1 = (function() {
+        			$("#splash-1").attr("src", "/img/splash/" + e + ".png");
+        			$("#splash-2").fadeOut(4000, function() {
+        			    $("#splash-2").attr("src", "/img/splash/" + e + ".png").css("display", "flex");
+        			    if(++e > 5) {
+        			    	e = 1;
+        			    };
+        			    setTimeout(an_1, 10000);
+        			});
+        		});
+        		an_1();
+        		
+            	$.ajax({
 					type: "post",
 					url: "/api/rfc.php?auth",
 					dataType: "json",
