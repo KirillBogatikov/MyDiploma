@@ -29,6 +29,4 @@
 		
 		return $result;
 	}
-	
-	echo json_encode(listFiles("../api/"));
 ?>
