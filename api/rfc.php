@@ -48,8 +48,13 @@
 				$response["code"] = removeType($_POST["id"]); 
 			break;
 		}
-	} else if(isset($_GET["const"])) {
-		$response["body"] = $_CONST;
+	} else if(isset($_GET["tools"])) {
+		include_once "tools.php";
+		
+		switch($_POST["method"]) {
+			case "const": $response["body"] = $_CONST; break;
+			case "uniqid": $response["body"] = uniqidReal(); break;
+		}
 	} else if(isset($_GET["segments"])) {
 		include_once "segments.php";
 		
