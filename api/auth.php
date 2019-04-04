@@ -1,6 +1,7 @@
 <?php
 	include_once "const.php";
 	include_once "mysql.php";
+	include_once "files.php";
 
 	function setAuthCookie($id, $hash) {
 		setcookie(AUTH_COOKIE_ID, $id, time() + 60 * 60 * 24 * 30, "/");
