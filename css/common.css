@@ -45,6 +45,7 @@ BODY {
 }
 
 #header-control-guest, #header-control-user {
+	position: relative;
 	display: none;
     float: right;
 }
