@@ -2,38 +2,34 @@
  * CONTROLS BY USER RULE
  */
 var lastUserRole;
-function updateControls() {
-	var $user = $("#header-control-user");
-	var $guest = $("#header-control-guest");
+function updateControls(role) {
+	var $controls = $("#header-control");
 	
 	var currentUserRole = currentRole();
-    if(currentUserRole != lastUserRole) {
+    if(lastUserRole != currentUserRole && !(currentUserRole == USER_ROLE_ADMIN  && lastUserRole == USER_ROLE_USER)) {
     	lastUserRole = currentUserRole;
-        if(currentUserRole == USER_ROLE_GUEST) {
-        	$user.animate({
-                right: -$("#controls").width() * 1.5
-            }, {
-            	duration: 200,
-                complete: function() { 
-                	$user.fadeOut(0);
-                    $guest.fadeIn(0).animate({
-                        right: 0	                	
-                    }, 200);
-                }
-            });
+    	
+    	$controls.css("animation", "rotation 1s linear");
+    	if(currentUserRole == USER_ROLE_GUEST) {
+        	setTimeout(function() {
+        		$("#first").attr("href", "#signup");
+        		$("#second").attr("href", "#signin");
+        		$("#first img").attr("src", "/img/user/sign_up.png");
+        		$("#second img").attr("src", "/img/user/sign_in.png");
+        		setTimeout(function() {
+        			$controls.css("animation", "");
+        		}, 900);
+        	}, 100);
         } else {
-        	$guest.animate({
-                right: -$("#controls").width() * 1.5
-            }, {
-                duration: 200,
-                complete: function() { 
-                	$guest.fadeOut(0);
-                	$user.fadeIn(0).animate({
-                        right: 0                        
-                    }, 200);
-                }
-            });
-            
+        	setTimeout(function() {
+        		$("#first").attr("href", "/user");
+        		$("#second").attr("href", "#signout");
+        		$("#first img").attr("src", "/img/user/user.png");
+        		$("#second img").attr("src", "/img/user/sign_out.png");
+        		setTimeout(function() {
+        			$controls.css("animation", "");
+        		}, 900);
+        	}, 100);
         }
     }
     CONTROLS_UPDATER = setTimeout(updateControls, 1000);
@@ -47,9 +43,10 @@ if(currentRole() == USER_ROLE_GUEST) {
 
 CONTROLS_UPDATER = setTimeout(updateControls, 1000);
 
-$(window).bind("onrolechange", function() {
+$(window).bind("onrolechange", function(event, role) {
 	clearTimeout(CONTROLS_UPDATER);
-	updateControls();
+	console.log(role);
+	updateControls(role);
 });
 
 /**
