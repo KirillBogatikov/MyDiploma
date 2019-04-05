@@ -1,3 +1,6 @@
+/**
+ * CONTROLS BY USER RULE
+ */
 var lastUserRole;
 function updateControls() {
 	var $user = $("#header-control-user");
@@ -49,6 +52,10 @@ $(window).bind("onrolechange", function() {
 	updateControls();
 });
 
+/**
+ * SPLASHES 
+ */
+
 const SPLASH_ANIMATION_TIME = 1500;
 const SPLASH_TIMEOUT = 8500;
 
@@ -67,4 +74,40 @@ function showNextSplash() {
 
 $(document).ready(function() {
     showNextSplash();
+});
+
+/**
+ * SCROLLING
+ */
+
+var currentArrowDirection = "down";
+$(window).on("scroll", function() {
+	var scroll = document.scrollingElement; 
+	if(scroll.scrollTop > scroll.scrollTopMax / 2) {
+		if(currentArrowDirection == "down")
+			$("#down").css("animation", "up_rotation 0.300s linear");
+		
+		currentArrowDirection = "up";
+		setTimeout(function() {
+			$("#down").css("transform", "rotate(180deg)");
+		}, 300);
+	} else {
+		if(currentArrowDirection == "up")
+			$("#down").css("animation", "down_rotation 0.300s linear");
+		
+		currentArrowDirection = "down";
+		setTimeout(function() {
+			$("#down").css("transform", "rotate(0deg)");
+		}, 300);
+	}
+});
+
+$(window).bind("onanchorclick", function(event, click, href) {
+	if(href == "down") {
+		click.preventDefault();
+		var scroll = document.scrollingElement; 
+		$(document.scrollingElement).animate({
+			scrollTop: scroll.scrollTop >= scroll.scrollTopMax / 2 ? 0 : scroll.scrollTopMax
+		});
+	}
 });
