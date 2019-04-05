@@ -7,6 +7,13 @@
 		setcookie(AUTH_COOKIE_ID, $id, time() + 60 * 60 * 24 * 30, "/");
 		setcookie(AUTH_COOKIE_HASH, $hash, time() + 60 * 60 * 24 * 30, "/");
 	}
+	
+	function removeAuthCookie() {
+		unset($_COOKIE[AUTH_COOKIE_ID]);
+		unset($_COOKIE[AUTH_COOKIE_HASH]);
+		setcookie(AUTH_COOKIE_ID, "", time() - 3600, "/");
+		setcookie(AUTH_COOKIE_HASH, "", time() - 3600, "/");
+	}
 
 	function signin($login=null, $password=null) {
 		$user;
@@ -18,10 +25,10 @@
 			$user = $mysql->toObject();
 			
 			$hash = md5(md5($password));
-		} else if(isset($_COOKIE[AUTH_COOKIE_ID]) && isset($_COOKIE[AUTH_COOKIE_HASH])) {
+		} else /*if(isset($_COOKIE[AUTH_COOKIE_ID]) && isset($_COOKIE[AUTH_COOKIE_HASH])) {
 			$user = findUserById($_COOKIE[AUTH_COOKIE_ID]);
 			$hash = $_COOKIE[AUTH_COOKIE_HASH];
-		} else {
+		} else */{
 			return AUTH_NO_COOKIE;
 		}
 		
@@ -85,10 +92,14 @@
 	function currentRole() {
 		if(isset($_COOKIE[AUTH_COOKIE_ID]) && isset($_COOKIE[AUTH_COOKIE_HASH])) {
 			$mysql = new MySQLConnection();
-			$mysql->query("SELECT role FROM @users WHERE id='".$_COOKIE[AUTH_COOKIE_ID]."'");
+			$mysql->query("SELECT role, hash FROM @users WHERE id='".$_COOKIE[AUTH_COOKIE_ID]."'");
 			$user = $mysql->toObject();
 			
-			return $user->role == "admin" ? USER_ROLE_ADMIN : USER_ROLE_USER;
+			if($user->hash != $_COOKIE[AUTH_COOKIE_HASH]) {
+				signout();
+			} else {
+				return $user->role == "admin" ? USER_ROLE_ADMIN : USER_ROLE_USER;
+			}
 		} 
 		return USER_ROLE_GUEST;
 	}
@@ -105,10 +116,7 @@
 			return ACCESS_DENIED;
 		}
 		
-		unset($_COOKIE[AUTH_COOKIE_ID]);
-		unset($_COOKIE[AUTH_COOKIE_HASH]);
-		setcookie(AUTH_COOKIE_ID, "", time() - 3600, "/");
-		setcookie(AUTH_COOKIE_HASH, "", time() - 3600, "/");
+		removeAuthCookie();
 		return RFC_SUCCESS;
 	}
 	
