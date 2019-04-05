@@ -42,10 +42,12 @@ function currentRole() {
 }
 
 $(window).bind("onanchorclick", function(event, click, anchor) {
-	click.preventDefault();
-	switch(anchor) {
-		case "signin": signin(prompt("Login"), prompt("Password")); break;
-		case "signup": signup(prompt("Login"), prompt("Password"), prompt("Name"), prompt("Surname")); break;
-		case "signout": signout(); break;
+	if(anchor.startsWith("sign")) {
+		click.preventDefault();
+		switch(anchor) {
+			case "signin": signin(prompt("Login"), prompt("Password")); break;
+			case "signup": signup(prompt("Login"), prompt("Password"), prompt("Name"), prompt("Surname")); break;
+			case "signout": signout(); break;
+		}
 	}
 });
