@@ -2,11 +2,16 @@
  * CONTROLS BY USER RULE
  */
 var lastUserRole;
-function updateControls(role) {
+function updateControls() {
 	var $controls = $("#header-control");
 	
 	var currentUserRole = currentRole();
-    if(lastUserRole != currentUserRole && !(currentUserRole == USER_ROLE_ADMIN  && lastUserRole == USER_ROLE_USER)) {
+	
+	if(!lastUserRole && currentUserRole == USER_ROLE_GUEST) {
+		return;
+	}
+	
+    if(lastUserRole != currentUserRole) {
     	lastUserRole = currentUserRole;
     	
     	$controls.css("animation", "rotation 1s linear");
@@ -43,10 +48,9 @@ if(currentRole() == USER_ROLE_GUEST) {
 
 CONTROLS_UPDATER = setTimeout(updateControls, 1000);
 
-$(window).bind("onrolechange", function(event, role) {
+$(window).bind("onrolechange", function(event) {
 	clearTimeout(CONTROLS_UPDATER);
-	console.log(role);
-	updateControls(role);
+	updateControls();
 });
 
 /**
@@ -108,3 +112,20 @@ $(window).bind("onanchorclick", function(event, click, href) {
 		});
 	}
 });
+
+/**
+ * 
+ */
+
+if(document.location.hash) {
+	var method = document.location.hash.split("#")[1];
+	
+	if(method == "signin" || method == "signup") {
+		history.pushState(null, "", "http://mydiploma.ru/" + method);
+		
+		switch(method) {
+			case "signin": /*signin*/ break;
+			case "signup": /*signup*/ break;
+		}
+	}
+}
