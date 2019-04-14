@@ -1,5 +1,6 @@
 <?php
 	include_once "const.php";
+	include_once "image.php";
 	include_once "types.php";
 	include_once "files.php";
 	include_once "auth.php";
@@ -21,9 +22,7 @@
 			$list = $list->listNames("*.png", false);	
 		}
 		
-		var_dump($list);
 		$list = array_slice($list, $offset, $length);
-		var_dump($list);
 		return $list;
 	}
 	
@@ -33,7 +32,13 @@
 	
 	function loadSegment($type, $uid, $width, $height) {
 		$image = new Image(findPathToSegment($type, $uid));
-		$image->resize($width, $height);
+		if(isset($width) && isset($height)) {
+			$image->resize($width, $height);
+		} else if(isset($width)) {
+			$image->resizeToWidth($width);
+		} else if(isset($height)) {
+			$image->resizeToHeight($height);
+		}
 		$image->out();
 	}
 	
