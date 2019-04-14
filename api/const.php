@@ -47,5 +47,8 @@
 	
 	defConst("ACCESS_DENIED", 0x30);
 	
+	defConst("NO_SUCH_GROUP", 0x40);
+	defConst("NO_SUCH_METHOD", 0x41);
+	
 	define("CONFIG_PATTERN_PATH", "../empty_configuraton.json");
 ?>

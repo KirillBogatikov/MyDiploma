@@ -27,8 +27,10 @@
 			case "id": 
 				$response["body"] = currentID();	
 			break;
+			default:
+				$response["code"] = NO_SUCH_METHOD;
 		}
-	} else if(isset($_GET["type"])) {
+	} else if(isset($_GET["types"])) {
 		include_once "types.php";
 		
 		switch($_POST["method"]) {
@@ -47,6 +49,8 @@
 			case "remove": 
 				$response["code"] = removeType($_POST["id"]); 
 			break;
+			default:
+				$response["code"] = NO_SUCH_METHOD;
 		}
 	} else if(isset($_GET["tools"])) {
 		include_once "tools.php";
@@ -54,33 +58,38 @@
 		switch($_POST["method"]) {
 			case "const": $response["body"] = $_CONST; break;
 			case "uniqid": $response["body"] = uniqidReal(); break;
+			default: $response["code"] = NO_SUCH_METHOD;
 		}
 	} else if(isset($_GET["segments"])) {
 		include_once "segments.php";
 		
 		switch($_POST["method"]) {
 			case "list":
-				$response["body"] = listSegments($_POST["id"], $_POST["offset"], $_POST["length"]);
+				$response["body"] = listSegments($_POST["type"], $_POST["offset"], $_POST["count"]);
 			break;
 			case "load":
 				loadSegment($_POST["type"], $_POST["uid"], $_POST["width"], $_POST["height"]);
-			break;
+				exit;
+			break; 
 			case "upload":
 				$response["code"] = uploadSegment($_POST["type"], $_FILES["image"], isset($_POST["uid"]) ? $_POST["uid"] : -1);
 			break;
 			case "remove":
 				$response["code"] = removeSegment($_POST["type"], $_POST["uid"]);
 			break;
+			default:
+				$response["code"] = NO_SUCH_METHOD;
 		}
 	} else if(isset($_GET["config"])) {
 		include_once "config.php";
 		
 		switch($_POST["method"]) {
-			case "create": $response["code"] = createCfg(); break;	
+			case "create": $response["body"] = createCfg(); break;	
 			case "load": $response["body"] = loadCfg($_POST["uid"]); break;
 			case "save": $response["body"] = saveCfg($_POST["uid"], $_POST["config"]); break;
 			case "remove": $response["code"] = removeCfg($_POST["uid"]); break;
 			case "list": $response["body"]  = listCfg(); break;
+			default: $response["code"] = NO_SUCH_METHOD;
 		}
 	} else if(isset($_GET["user"])) {
 		include_once "user.php";
@@ -99,7 +108,10 @@
 			case "configs": $response["body"] = listConfigs(isset($_POST["id"]) ? $_POST["id"] : currentID()); break;
 			case "uploads": $response["body"] = listUploads(isset($_POST["id"]) ? $_POST["id"] : currentID()); break;
 			case "list": $response["body"] = listUsers($_POST["params"]); break;
+			default: $response["code"] = NO_SUCH_METHOD;
 		} 
+	} else {
+		$response["code"] = NO_SUCH_GROUP;
 	}
 	
 	echo json_encode($response);
