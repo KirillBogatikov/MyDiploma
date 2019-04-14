@@ -1,0 +1,43 @@
+@CHARSET "UTF-8";
+
+#loading-tools {
+    position: relative;
+    height: 100%;
+    float: right;
+    padding-left: 20px;
+    cursor: pointer;
+}
+
+#content {
+	
+}
+
+#content > DIV {
+    padding: 1%;
+}
+
+#options {
+    width: 18%;
+    max-width: 300px;
+    background: #F9E8A2;	
+    box-shadow: 0px 0px 5px black;
+    float: left;
+}
+
+#bench {
+    position: absolute;	
+}
+
+#segments {
+	width: 28%;
+	max-width: 550px;
+	background: #F9E8A2;
+	box-shadow: 0px 0px 5px black;
+	float: right;
+}
+
+#blank {
+	background: white;
+	margin: auto;
+	box-shadow: 0px 0px 10px black;
+}
