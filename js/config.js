@@ -15,8 +15,6 @@ Config = {
 		}
 		
 		callRemoteFunction("config", name, data, function(data) {
-			console.log(data);
-			
 			if(data.body == RFC_NOT_FOUND) {
 				console.log("RELOAD");
 				localStorage.removeItem("config-uid");
