@@ -41,6 +41,5 @@
         <script src="js/config.js"></script>
         <script src="js/workbench_ui.js"></script>
         <script src="js/workbench.js"></script>
-        <script src="js/segments.js"></script>
 	</body>
 </html>
