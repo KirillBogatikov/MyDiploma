@@ -8,6 +8,7 @@
        <link rel="stylesheet" href="css/common.css"/>
        <link rel="stylesheet" href="css/workbench.css"/>
        <link rel="shortcut icon" href="img/favicon.ico"/>
+       <style id="fonts"></style>
     </head>
 	<body>
 	    <div id="header">
@@ -23,8 +24,10 @@
         </div>
 	    <div id="content">
 	       <div id="options">
-	           <span>Цвет бумаги:</span>
-	           <div id="background-color"></div>
+	           <div id="background-color-container">
+		           <span>Цвет бумаги:</span>
+		           <div id="background-color"></div>
+		       </div>
 	       </div>
 	       <div id="bench">
 	           <div id="blank">
@@ -36,7 +39,7 @@
 	       </div>
 	    </div>
 	    <script src="js/jquery.js"></script>
-        <script src="js/auth.js"></script>
+       	<script src="js/auth.js"></script>
         <script src="js/common.js"></script>
         <script src="js/config.js"></script>
         <script src="js/workbench_ui.js"></script>

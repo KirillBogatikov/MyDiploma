@@ -34,10 +34,46 @@
 	background: #F9E8A2;
 	box-shadow: 0px 0px 5px black;
 	float: right;
+	overflow: hidden;
 }
 
 #blank {
 	background: white;
 	margin: auto;
 	box-shadow: 0px 0px 10px black;
+}
+
+#background-color-container {
+	text-align: center;
+	padding: 1%;
+}
+
+.segment-container {
+	background: #F7D962;
+	border: solid 3px #F7D962;
+	border-radius: 30px;
+	padding: 1%;
+	margin-bottom: 1%;
+}
+
+.segment-list {
+	overflow-y: scroll;
+	height: 0px;
+	background: #F9E389;
+	width: 98%;
+	border-radius: 30px;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+}
+
+.segment-title {
+	width: 98%;
+	padding: 1%;
+	display: block;
+	text-align: center;
+}
+
+IMG.segment {
+	margin-left: 10px;
+	margin-top: 10px;
 }
