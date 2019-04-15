@@ -50,5 +50,7 @@
 	defConst("NO_SUCH_GROUP", 0x40);
 	defConst("NO_SUCH_METHOD", 0x41);
 	
+	defConst("EDITABLE_SEGMENT_PREVIEW", "Посмотрите, какой красивый шрифт");
+	
 	define("CONFIG_PATTERN_PATH", "../empty_configuraton.json");
 ?>
