@@ -1,19 +1,25 @@
 [{
     "id":"8ab124cee085b",
-    "font":"Stylo"
+    "font":"Stylo",
+    "file":"/fonts/stylo.ttf"
 }, {
     "id": "d0107d3eed11f",
-    "font":"OwnHand"
+    "font":"OwnHand",
+    "file":"/fonts/own-hand.ttf"
 }, {
     "id": "4cbbe41e4815c",
-    "font":"Tahoma"
+    "font":"Tahoma",
+    "file":"/fonts/tahoma.ttf"
 }, {
     "id": "f0346061b2a36",
-    "font":"MonAmour"
+    "font":"MonAmour",
+    "file":"/fonts/mon-amour.ttf"
 }, {
     "id": "450338a7a650b",
-    "font":"TavridaAd"
+    "font":"TavridaAd",
+    "file":"/fonts/tavrida-ad.otf"
 }, {
     "id": "5bad80f782c36",
-    "font":"Metropolis"
+    "font":"Metropolis",
+    "file":"/fonts/metropolis.otf"
 }]
