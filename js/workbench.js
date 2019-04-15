@@ -11,62 +11,67 @@ callRemoteFunction("types", "list", {}, function(types) {
 		var root = $("<div class='segment-container'></div>");
 		var span = $("<span class='segment-title'>" + type.name + "</span>");
 		var div = $("<div class='segment-list'></div>");
-		
-		addListener(span, div);
-		
-		loadType(div, type);
-		
 		root.append(span).append(div);
 		$("#segments").append(root);
+		
+		addTitleClickListener(span, div);
+		
+		loadType(div, type, 0);
 	}
+	
+	HGHT = $("#segments").height() - $(".segment-container").outerHeight(true)*SEGMENT_TYPES.length;
 });
 
-function addListener(span, div) {
+function addTitleClickListener(span, div) {
+	span.attr("expanded", "false");
 	var e = false;
 	span.on("click", function() {
 		var h = 0;
 		if(e) {
 			e = false;
 		} else {
-			h = 250;
+			h = HGHT;
 			e = true;
+			
+			var exp = $("span[expanded=true]"); 
+			if(exp.length > 0) {
+				exp.click();
+			}
+				
 		}
+		
+		span.attr("expanded", e);
 		
 		div.animate({ height: h });
 	});
 }
 
-function loadType(div, type) {
-	callRemoteFunction("segments", "list", { type: type.id, offset: 0, count: 15 }, function(list) {
-		if(~type.type.indexOf("resizable") || ~type.type.indexOf("static")) {
-			for(var i in list.body) {
-				loadImageSegment(div, type.id, list.body[i]);
-			}
-		} else {
-			for(var i in list.body) {
-				loadTextSegment(div, type.id, list.body[i]);
-			}
+function loadType(div, type, offset) {
+	callRemoteFunction("segments", "list", { type: type.id, offset: offset, count: 15 }, function(list) {
+		var width = div.innerWidth() / 3 - 20;
+		for(var i in list.body) {
+			var ds = new DraggableSegment(type.type, type.id, list.body[i], width);
+			
+			(function(uid) {
+				if(~type.type.indexOf("static")) {
+					ds.onDropDown = function(x, y) {
+						Config.setStatic(type.id, uid);
+					};
+				} else {
+					if(~type.type.indexOf("resizable")) {
+						ds.onDropDown = function(x, y, width, height) {
+							console.log(ds.$dragged);
+							Config.addResizable(ds.$dragged, type.id, uid, x, y, width, height);
+						}
+					}
+				}
+			})(list.body[i]);
+			ds.appendTo(div, width);
 		}
 	});
 }
 
-function loadImageSegment(div, id, uid) {
-	var xhr = callRemoteFunction("segments", "load", { type: id, uid: uid, width: $("#segments").children().innerWidth() / 3.1 }, function(){
-		var img = $("<img class='segment' src='" + URL.createObjectURL(xhr.response) + "'/>");
-		img.outerWidth($("#segments").children().innerWidth() / 3.1);
-		
-		div.append(img);
-	}, "blob");
-}
-
-function loadTextSegment(div, id, uid) {
-	$("#fonts").text($("#fonts").text() + " @font-face{ font-family: \"" + uid.font + "\"; src: url(\"" + uid.file +"\"); } ");
-	
-	var span = $("<div></div>");
-	span.html(EDITABLE_SEGMENT_PREVIEW);
-	span.css("font-family", uid.font);
-	div.append(span);
-}
+window.ondragstart = function() { return false; }
 
 $(window).on("load", function() {
 	var $body = $(document.body);

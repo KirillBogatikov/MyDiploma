@@ -49,26 +49,33 @@
 }
 
 .segment-container {
-	background: #F7D962;
-	border: solid 3px #F7D962;
-	border-radius: 30px;
-	padding: 1%;
-	margin-bottom: 1%;
+    border-radius: 0px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+	box-shadow: 0px 0px 5px black;
+	margin-bottom: 2%;
+	padding: 0px;
+	padding-bottom: 1%;
+    background: #F7D962;
 }
 
 .segment-list {
 	overflow-y: scroll;
 	height: 0px;
 	background: #F9E389;
-	width: 98%;
-	border-radius: 30px;
-	border-top-left-radius: 0px;
-	border-top-right-radius: 0px;
+	width: 100%;
+	border-radius: 0px;
+    border-bottom-left-radius: 20px;
 }
 
 .segment-title {
-	width: 98%;
-	padding: 1%;
+	background: #F7D962;
+	border-radius: 0px;
+	border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+	width: 96%;
+	padding: 2%;
+	padding-bottom: 1%;
 	display: block;
 	text-align: center;
 }
@@ -76,4 +83,15 @@
 IMG.segment {
 	margin-left: 10px;
 	margin-top: 10px;
+}
+
+.resizable-tools-container {
+	position: absolute;
+}
+
+.resizable-tool {
+	position: relative;
+	margin-left: -50px;
+	width: 100px;
+	height: 100px;
 }
