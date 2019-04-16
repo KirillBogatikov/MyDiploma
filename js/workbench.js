@@ -6,6 +6,8 @@ SEGMENT_TYPES = [];
 callRemoteFunction("types", "list", {}, function(types) {
 	SEGMENT_TYPES = types.body;
 	
+	Config.load();
+	
 	for(var i in SEGMENT_TYPES) {
 		var type = SEGMENT_TYPES[i];
 		var list = new TypeList(type);
@@ -41,8 +43,6 @@ $(window).on("load", function() {
 	$blank
 		.width(scale * 210).height(scale * 297)
 		.css("margin-top", ($bench.height() - scale * 297) / 2);
-	
-	Config.load();
 
 	var picker = $("#background-color");
 	var bgColorPicker = new ColorPicker(picker);

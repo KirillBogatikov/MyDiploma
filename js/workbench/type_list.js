@@ -10,6 +10,7 @@ TypeList = function(type) {
 		var h = 0;
 		if(ex) {
 			ex = false;
+			TypeList.currentExpanded = null;
 		} else {
 			h = TypeList.MAX_HEIGHT;
 			ex = true;
@@ -18,9 +19,9 @@ TypeList = function(type) {
 			if(exp && exp[0] != $s[0]) {
 				exp.click();
 			}	
+			TypeList.currentExpanded = $s;
 		}
 		
-		TypeList.currentExpanded = $s;
 		$l.animate({ height: h });
 	});
 	
@@ -40,11 +41,11 @@ TypeList.prototype.load = function() {
 	this.isLoading = true;
 	var offset = this.$list.children().length;
 	var thiz = this;
-	var width = this.$list.width() / 3 - 20;
+	
 	callRemoteFunction("segments", "list", { type: this.type.id, offset: offset, count: 15 }, function(response) {
 		var uids = response.body;
 		for(var i in uids) {
-			new ListItem(thiz.type, uids[i], width).appendTo(thiz.$list);
+			new ListItem(thiz.type, uids[i], thiz.$list.width() / 3 - 20).appendTo(thiz.$list);
 		}
 		
 		thiz.isLoading = false;
