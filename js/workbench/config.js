@@ -42,13 +42,16 @@ Config = {
 		for(var i in SEGMENT_TYPES) {
 			var type = SEGMENT_TYPES[i];
 			
+			var width = $("#blank").width();
+			var height = $("#blank").height();
+			
 			if(Config.__current[type.id]) {
 				if(~type.type.indexOf("static")) {
 					Config.setStatic(type.id, Config.__current[type.id]);
 				} else if(~type.type.indexOf("resizable")) {
 					var list = Config.__current[type.id];
 					for(var i in list) {
-						Config.__show_resizable(i+1, type.id, list[i].uid, list[i].x, list[i].y, list[i].width, list[i].height, "");
+						Config.__show_resizable(i+1, type.id, list[i].uid, list[i].x * width, list[i].y * height, list[i].width * width, list[i].height * height, "");
 					}
 				}
 			}
@@ -88,20 +91,24 @@ Config = {
 			this.__current[type] = [];
 		}
 	
-		var index = this.__current[type].push({ uid: uid, x: x, y: y, width: width, height: height });
+		var index = this.__current[type].push({ uid: uid });
+		this.changeResizable({
+			type: type,
+			index: index-1
+		}, x, y, width, height);
 		this.__show_resizable(index, type, uid, x, y, width, height, defSrc);
 	},
 	changeResizable(anchor, x, y, width, height) {
 		var type = this.__current[anchor.type];
 		
 		if(x != FIELD_NOT_CHANGED) 
-			type[anchor.index].x = x;
+			type[anchor.index].x = x / $("#blank").width();
 		if(y != FIELD_NOT_CHANGED) 
-			type[anchor.index].y = y;
+			type[anchor.index].y = y / $("#blank").height();
 		if(width != FIELD_NOT_CHANGED) 
-			type[anchor.index].width = width;
+			type[anchor.index].width = width / $("#blank").width();
 		if(height != FIELD_NOT_CHANGED) 
-			type[anchor.index].height = height;
+			type[anchor.index].height = height / $("#blank").height();
 		
 	},
 	__show_editable: function(index, type, x, y, font, color, size, value) {
@@ -124,9 +131,9 @@ Config = {
 		var type = this.__current[anchor.type];
 		
 		if(x != FIELD_NOT_CHANGED) 
-			type[anchor.index].x = x;
+			type[anchor.index].x = x / $("#blank").width();
 		if(y != FIELD_NOT_CHANGED) 
-			type[anchor.index].y = y;
+			type[anchor.index].y = y / $("#blank").height();
 		if(font != FIELD_NOT_CHANGED) 
 			type[anchor.index].font = font;
 		if(color != FIELD_NOT_CHANGED) 

@@ -13,7 +13,7 @@ ListItem = function(type, uid, width) {
 	}, "blob");
 	
 	var update_draggable = function(x, y) {
-		$d.offset({ top: y, left: x });
+		$d.css("top", y).css("left", x);
 	};
 	
 	var out_blank = function(d_off) {
@@ -49,10 +49,17 @@ ListItem = function(type, uid, width) {
 	$(window).on("mouseup", function(event) {
 		var offset = $d.offset();
 		var width = $d.width(), height = $d.height();
-		$d.remove();
+		$d.fadeOut(200, function() {
+			$d.offset({ top: 0, left: 0 });
+			$d.remove();
+			$d.fadeIn();
+		});
 		
 		if(down) {
 			if(out_blank(offset)) return;
+			
+			offset.left -= $("#blank").offset().left;
+			offset.top -= $("#blank").offset().top;
 			
 			if(~type.type.indexOf("static")) {
 				Config.setStatic(type.id, uid);
@@ -74,15 +81,17 @@ ListItem.prototype.appendTo = function(root) {
 };
 
 Resizable = function(type, uid, x, y, width, height, anchor, defSrc) {
+	x += $("#blank").offset().left;
+	y += $("#blank").offset().top;
+	
 	var $r = this.$root = $("<div class='resizable-tools-container'></div>");
 	var $i = this.$image = $("<img src='" + defSrc + "'/>");
 	var $s = this.$resize = $("<img class='resizable-tool' src='/img/tools/resize.png' />");
 	var $d = this.$delete = $("<img class='resizable-tool' src='/img/tools/delete.png' />");
 	
 	$r.offset({ top: y, left: x });
-	$i.width(width).height(height);
-	$d.width(width / 4).css("margin-left", width * 0.875).css("margin-top", -width * 0.125);
-	$s.width(width / 4).css("margin-left", width * 0.875).css("margin-top", width * 0.875);
+	$d.width($("#blank").width() / 10);
+	$s.width($("#blank").width() / 10);
 	
 	var xhr = callRemoteFunction("segments", "load", { type: type, uid: uid }, function() {
 		var blob = URL.createObjectURL(xhr.response);
@@ -92,6 +101,14 @@ Resizable = function(type, uid, x, y, width, height, anchor, defSrc) {
 	var update_draggable = function(x, y) {
 		$r.offset({ top: y, left: x });
 	};
+	
+	var update_tools = function(width, height) {
+		$i.width(width).height(height);
+		$d.css("margin-left", width - ($d.width() / 2)).css("margin-top", -($d.width() / 2));
+		$s.css("margin-left", width - ($d.width() / 2)).css("margin-top", height - ($d.width() / 2));
+	};
+	
+	update_tools(width, height);
 	
 	var out_blank = function(d_off) {
 		var $b = $("#blank");
@@ -109,26 +126,38 @@ Resizable = function(type, uid, x, y, width, height, anchor, defSrc) {
 		return false;
 	};
 	
-	var down = null;
+	var moveDown = null;
 	$i.on("mousedown", function(event) {
-		down = { x: event.offsetX, y: event.offsetY };
+		moveDown = { x: event.offsetX, y: event.offsetY };
 	})
 	
+	var resizeDown = false;
+	$s.on("mousedown", function(event) {
+		resizeDown = true;
+	});
+	
 	$(window).on("mousemove", function(event) {
-		if(down != null)  {
-			update_draggable(event.pageX - down.x, event.pageY - down.y);
+		if(moveDown != null)  {
+			update_draggable(event.pageX - moveDown.x, event.pageY - moveDown.y);
+		}
+		if(resizeDown) {
+			var width = Math.abs(event.pageX - $r.offset().left);
+			var height = Math.abs(event.pageY - $r.offset().top);
+			
+			update_tools(width, height);
 		}
 	})
 	
 	$(window).on("mouseup", function(event) {
-		if(down) {
+		if(moveDown) {
 			if(out_blank($r.offset())) { $d.click(); return; };
 			
 			var offset = $r.offset();
-			Config.changeResizable(anchor, offset.left, offset.top, $i.width(), $i.height());
+			Config.changeResizable(anchor, offset.left - $("#blank").offset().left, offset.top - $("#blank").offset().top, $i.width(), $i.height());
 		}
 		
-		down = null;
+		moveDown = null;
+		resizeDown = false;
 	});
 	
 	$d.on("click", function(event) {
@@ -138,10 +167,14 @@ Resizable = function(type, uid, x, y, width, height, anchor, defSrc) {
 		});
 	});
 	
-	$s.on("mousedown", function(event) {
-		console.log("E");
+	$r.on("mouseenter", function() {
+		$d.fadeIn(200);
+		$s.fadeIn(200);
 	});
-	
+	$r.on("mouseleave", function() {
+		$d.fadeOut(200);
+		$s.fadeOut(200);
+	});
 	$r.append($i).append($s).append($d);
 	
 	$(document.body).append($r);

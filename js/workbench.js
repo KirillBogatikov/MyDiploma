@@ -18,7 +18,8 @@ callRemoteFunction("types", "list", {}, function(types) {
 	TypeList.MAX_HEIGHT = $("#segments").height() - $(".segment-container").outerHeight(true) * SEGMENT_TYPES.length;
 });
 
-window.ondragstart = function() { return false; }
+window.ondragstart = function() { return false; };
+window.onbeforeunload = function() { Config.save(); };
 
 $(window).on("load", function() {
 	var $body = $(document.body);
