@@ -8,68 +8,13 @@ callRemoteFunction("types", "list", {}, function(types) {
 	
 	for(var i in SEGMENT_TYPES) {
 		var type = SEGMENT_TYPES[i];
-		var root = $("<div class='segment-container'></div>");
-		var span = $("<span class='segment-title'>" + type.name + "</span>");
-		var div = $("<div class='segment-list'></div>");
-		root.append(span).append(div);
-		$("#segments").append(root);
-		
-		addTitleClickListener(span, div);
-		
-		loadType(div, type, 0);
+		var list = new TypeList(type);
+		list.load();
+		list.appendTo($("#segments"));
 	}
 	
-	HGHT = $("#segments").height() - $(".segment-container").outerHeight(true)*SEGMENT_TYPES.length;
+	TypeList.MAX_HEIGHT = $("#segments").height() - $(".segment-container").outerHeight(true) * SEGMENT_TYPES.length;
 });
-
-function addTitleClickListener(span, div) {
-	span.attr("expanded", "false");
-	var e = false;
-	span.on("click", function() {
-		var h = 0;
-		if(e) {
-			e = false;
-		} else {
-			h = HGHT;
-			e = true;
-			
-			var exp = $("span[expanded=true]"); 
-			if(exp.length > 0) {
-				exp.click();
-			}
-				
-		}
-		
-		span.attr("expanded", e);
-		
-		div.animate({ height: h });
-	});
-}
-
-function loadType(div, type, offset) {
-	callRemoteFunction("segments", "list", { type: type.id, offset: offset, count: 15 }, function(list) {
-		var width = div.innerWidth() / 3 - 20;
-		for(var i in list.body) {
-			var ds = new DraggableSegment(type.type, type.id, list.body[i], width);
-			
-			(function(uid) {
-				if(~type.type.indexOf("static")) {
-					ds.onDropDown = function(x, y) {
-						Config.setStatic(type.id, uid);
-					};
-				} else {
-					if(~type.type.indexOf("resizable")) {
-						ds.onDropDown = function(x, y, width, height) {
-							console.log(ds.$dragged);
-							Config.addResizable(ds.$dragged, type.id, uid, x, y, width, height);
-						}
-					}
-				}
-			})(list.body[i]);
-			ds.appendTo(div, width);
-		}
-	});
-}
 
 window.ondragstart = function() { return false; }
 

@@ -15,7 +15,7 @@
 	}
 	
 	function resolvePath($uid=null) {
-		$path = "../users/".currentID()."/";
+		$path = "../users/".currentID()."/configs/";
 		if($uid != null) {
 			$path .= "$uid.json";
 		}

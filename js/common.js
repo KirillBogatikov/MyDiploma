@@ -64,7 +64,6 @@ $(window).on("scroll", function() {
 			$("#down").css("transform", "rotate(" + deg + "deg)");
 		}, 300);	
 	}
-	
 });
 
 $("a[href^=#]").on("click", function(event) {

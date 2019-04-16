@@ -39,10 +39,12 @@
 	       </div>
 	    </div>
 	    <script src="js/jquery.js"></script>
+        <script src="js/workbench/type_list.js"></script>
+       	<script src="js/workbench/views.js"></script>
+        <script src="js/workbench/color_picker.js"></script>
+        <script src="js/workbench/config.js"></script>
        	<script src="js/auth.js"></script>
         <script src="js/common.js"></script>
-        <script src="js/config.js"></script>
-        <script src="js/workbench_ui.js"></script>
         <script src="js/workbench.js"></script>
 	</body>
 </html>
