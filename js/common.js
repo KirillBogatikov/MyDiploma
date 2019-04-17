@@ -33,6 +33,19 @@ function callRemoteFunction(group, name, data, listener, type) {
 	return XHR;
 }
 
+if(document.location.hash) {
+	var method = document.location.hash.split("#")[1];
+	
+	if(method == "signin" || method == "signup") {
+		history.pushState(null, "", "http://mydiploma.ru/" + method);
+		
+		switch(method) {
+			case "signin": /*signin*/ break;
+			case "signup": /*signup*/ break;
+		}
+	}
+}
+
 callRemoteFunction("tools", "const", { async: false }, function(response) {
 	for(var name in response.body) {
 		window[name] = response.body[name]; 

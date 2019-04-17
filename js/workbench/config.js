@@ -18,12 +18,15 @@ Config = {
 			}
 		}
 		
-		var uid = localStorage.getItem("config-uid");
-		if(!uid) {
-			callRemoteFunction("config", "create", {}, function(data) {
-				Config.__current = data.body;
-			});
-			return;
+		var uid = document.location.search.replace("?", "");
+		if(uid == "") {
+			uid = localStorage.getItem("config-uid");
+			if(!uid) {
+				Config.create();
+				return;	
+			}
+		} else {
+			history.pushState(null, "", "http://mydiploma.ru/workbench.php");
 		}
 		
 		callRemoteFunction("config", "load", { uid: uid }, function(data) {
@@ -34,6 +37,11 @@ Config = {
 				Config.__current = data.body;
 				Config.__import();
 			}
+		});
+	},
+	create: function() {
+		callRemoteFunction("config", "create", {}, function(data) {
+			Config.__current = data.body;
 		});
 	},
 	__import: function() {
@@ -52,6 +60,12 @@ Config = {
 					var list = Config.__current[type.id];
 					for(var i in list) {
 						Config.__show_resizable(i+1, type.id, list[i].uid, list[i].x * width, list[i].y * height, list[i].width * width, list[i].height * height, "");
+					}
+				} else if(~type.type.indexOf("editable")) {
+					var list = Config.__current[type.id];
+					console.log(list);
+					for(var i in list) {
+						Config.__show_editable(i+1, type.id, list[i].uid, list[i].x * width, list[i].y * height, list[i].color, list[i].size, list[i].value);
 					}
 				}
 			}
@@ -77,7 +91,8 @@ Config = {
 			height: $blank.height()
 		}, function(data) {
 			$("#" + type).attr("src", URL.createObjectURL(xhr.response));
-		}, "blob")
+		}, "blob") 
+		Config.save();
 	},
 	__show_resizable: function(index, type, uid, x, y, width, height, defSrc) {
 		var resizable = new Resizable(type, uid, x, y, width, height, {
@@ -109,46 +124,54 @@ Config = {
 			type[anchor.index].width = width / $("#blank").width();
 		if(height != FIELD_NOT_CHANGED) 
 			type[anchor.index].height = height / $("#blank").height();
-		
+		 
+		Config.save();
 	},
-	__show_editable: function(index, type, x, y, font, color, size, value) {
-		var editable = new Editable(type, uid, x, y, font, color, size, value, {
+	__show_editable: function(index, type, uid, x, y, color, size, value) {
+		var editable = new Editable({
 			type: type,
 			index: index-1
-		});
-		editable.appendTo($("#blank"));
+		}, uid, x, y, color, size, value);
 	},
-	addEditable: function(type, x, y, font, color, size, value) {
+	addEditable: function(type, uid, x, y, color, size, value) {
 		type = type.id;
 		if(!this.__current[type]) {
 			this.__current[type] = [];
 		}
 		
-		var index = this.__current[type].push({ x: x, y: y, font: font, color: color, size: size, value: value });
-		this.__show_editable(index, type, x, y, font, color, size, value);
+		var index = this.__current[type].push({ uid: uid });
+		this.changeEditable({
+				type: type, 
+				index: index-1
+		}, x, y, uid, color, size, value);
+		this.__show_editable(index, type, uid, x, y, color, size, value);
 	},
-	changeEditable(anchor, x, y, font, color, size, value) {
+	changeEditable(anchor, x, y, uid, color, size, value) {
 		var type = this.__current[anchor.type];
 		
 		if(x != FIELD_NOT_CHANGED) 
 			type[anchor.index].x = x / $("#blank").width();
 		if(y != FIELD_NOT_CHANGED) 
 			type[anchor.index].y = y / $("#blank").height();
-		if(font != FIELD_NOT_CHANGED) 
-			type[anchor.index].font = font;
+		if(uid != FIELD_NOT_CHANGED) 
+			type[anchor.index].uid = uid;
 		if(color != FIELD_NOT_CHANGED) 
 			type[anchor.index].color = color;
 		if(size != FIELD_NOT_CHANGED) 
 			type[anchor.index].size = size;
 		if(value != FIELD_NOT_CHANGED) 
-			type[anchor.index].value = value;		
+			type[anchor.index].value = value;	 
+		
+		Config.save();	
 	},
 	remove: function(anchor) {
 		var type = this.__current[anchor.type];
-		this.__current[anchor.type] = type.slice(0, anchor.index).concat(type.slice(anchor.index + 1));
+		this.__current[anchor.type] = type.slice(0, anchor.index).concat(type.slice(anchor.index + 1)); 
+		Config.save();
 	},
 	setBackground: function(color) {
 		this.__current.bgcolor = [color[0], color[1], color[2], 255];
-		$("#blank").css("background", "rgba(" + color.join(",") + ")");
+		$("#blank").css("background", "rgba(" + color.join(",") + ")"); 
+		Config.save();
 	}
 }

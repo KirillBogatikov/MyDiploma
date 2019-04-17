@@ -25,7 +25,9 @@ callRemoteFunction("types", "list", {}, function(types) {
 });
 
 window.ondragstart = function() { return false; };
-window.onbeforeunload = function() { Config.save(); };
+window.onbeforeunload = function(event) { 
+	Config.save();
+};
 
 $(window).on("load", function() {
 	var $body = $(document.body);
@@ -57,4 +59,13 @@ $(window).on("load", function() {
 		Config.setBackground(color);
 	};
 	
+});
+
+$(window).bind("onanchorclick", function(event, click, anchor) {
+	if(anchor == "new") {
+		click.preventDefault();
+		Config.create();
+		Config.save();
+		document.location.href = document.location.href + " ";
+	}
 });

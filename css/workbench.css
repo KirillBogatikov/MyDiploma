@@ -8,6 +8,14 @@
     cursor: pointer;
 }
 
+#loading-block {
+	display: none;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background: rgba(0, 0, 0, 0.5);
+}
+
 #content {
 	
 }
@@ -22,6 +30,35 @@
     background: #F9E8A2;	
     box-shadow: 0px 0px 5px black;
     float: left;
+}
+
+#background-color-container {
+    border-radius: 0px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: 0px 0px 5px black;
+    margin-bottom: 2%;
+    padding: 0px;
+    padding-bottom: 1%;
+    background: #F7D962;
+}
+
+#background-color-container > DIV {
+	background: #F9E389;
+	width: 90%;
+    padding: 5%;
+    border-radius: 0px;
+    border-bottom-right-radius: 20px;
+}
+
+#background-color-container > SPAN {
+    background: #F7D962;
+    border-radius: 0px;
+    border-top-right-radius: 20px;
+    width: 94%;
+    padding: 3%;
+    display: block;
+    text-align: center;
 }
 
 #bench {
@@ -44,11 +81,6 @@
 	z-index: 3;
 }
 
-#background-color-container {
-	text-align: center;
-	padding: 1%;
-}
-
 .segment-container {
     border-radius: 0px;
     border-top-left-radius: 20px;
@@ -62,10 +94,10 @@
 
 .segment-list {
 	overflow-y: scroll;
-	height: 0px;
-	background: #F9E389;
-	width: 100%;
-	border-radius: 0px;
+    height: 0px;
+    background: #F9E389;
+    width: 100%;
+    border-radius: 0px;
     border-bottom-left-radius: 20px;
 }
 
@@ -86,6 +118,13 @@ IMG.segment {
 	margin-top: 10px;
 }
 
+SPAN.segment {
+	display: inline-block;
+    margin-left: 10px;
+    margin-top: 10px;
+    text-align: center;
+}
+
 .dragged-segment {
 	position: absolute;
 	z-index: 5;
@@ -100,4 +139,41 @@ IMG.segment {
 	top: 0px;
 	left: 0px;
 	display: none;
+}
+
+.editable-item {
+	display: block;
+	position: absolute;
+}
+
+#text-editor-shadow {
+	width: 100%;
+	height: 100%;
+	display: none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 11;
+}
+
+#text-editor {
+	width: 50%;
+	margin: auto;
+	padding: 15px;
+	border-radius: 30px;
+	
+	background: #FCF0BD;
+	box-shadow: 0px 0px 10px black;
+}
+
+#editor-input {
+	width: 98%;
+	padding: 1%;
+	font-size: 18pt;
+}
+
+#editor-color-picker {
+	width: 33%;
+	padding: 1%;
 }

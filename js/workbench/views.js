@@ -77,13 +77,15 @@ ListItem.prototype.appendTo = function(root) {
 };
 
 TextListItem = function(type, uid, width) {
-	var $i = this.$item = $("<span class='segment'></span>");
-	var $d = this.$draggable = $("<span class='dragged-segment'></span>");
+	var $i = this.$item = $("<span class='segment'>" + EDITABLE_SEGMENT_PREVIEW + "</span>");
+	var $d = this.$draggable = $("<span class='dragged-segment'>" + EDITABLE_SEGMENT_PREVIEW + "</span>");
 	
 	$i.outerWidth(width);
 	$d.outerWidth(width);
 	
-	$("#fonts").text($("#fonts").text() + " @font-face{ font-family: \"" + type.font + "\"; src: url(\"" + font.file + "\");");
+	$("#fonts").text($("#fonts").text() + " @font-face{ font-family: \"" + uid.font + "\"; src: url(\"" + uid.file + "\"); } ");
+	$i.css("font-family", uid.font).css("font-size", "24pt");
+	$d.css("font-family", uid.font).css("font-size", "24pt");
 	
 	var update_draggable = function(x, y) {
 		$d.css("top", y).css("left", x);
@@ -107,11 +109,13 @@ TextListItem = function(type, uid, width) {
 	
 	var down = null;
 	$i.on("mousedown", function(event) {
+		event.preventDefault();
+		
 		down = { x: event.offsetX, y: event.offsetY };
 		
 		update_draggable(event.pageX - down.x, event.pageY - down.y);
 		$(document.body).append($d);
-	})
+	});
 	
 	$(window).on("mousemove", function(event) {
 		if(down != null)  {
@@ -135,7 +139,7 @@ TextListItem = function(type, uid, width) {
 			offset.top -= $("#blank").offset().top;
 			
 			if(~type.type.indexOf("editable")) {
-				Config.addEditable(type, uid, offset.left, offset.top, type.file, 24, [0, 0, 0]);
+				Config.addEditable(type, uid, offset.left, offset.top, [0, 0, 0], 24, "Текст");
 			}
 		}
 		
@@ -247,6 +251,75 @@ Resizable = function(type, uid, x, y, width, height, anchor, defSrc) {
 	$(document.body).append($r);
 };
 
-Editable = function() {
+Editable = function(anchor, uid, x, y, color, size, value) {
+	x += $("#blank").offset().left;
+	y += $("#blank").offset().top;
 	
+	$s = this.$span = $("<span class='editable-item'>" + value + "</span>");
+	$s.offset({ top: y, left: x });
+	$(document.body).append($s);
+	
+	$s.css("font-family", uid.font).css("font-size", "24pt");
+	$s.on("dblclick", function() {
+		$("#text-editor-shadow").fadeIn();
+	});
+	
+	var update_draggable = function(x, y) {
+		$s.offset({ top: y, left: x });
+	};
+	
+	var out_blank = function(d_off) {
+		var $b = $("#blank");
+		var b_off = $b.offset();
+		
+		if(d_off.left < b_off.left || d_off.top < b_off.top) {
+			return true;
+		}
+		
+		if(d_off.left + $s.width() > b_off.left + $b.width() ||
+		   d_off.top + $s.height() > b_off.top + $b.height()) {
+			return true;
+		}
+		
+		return false;
+	};
+	
+	var moveDown = null;
+	$s.on("mousedown", function(event) {
+		moveDown = { x: event.offsetX, y: event.offsetY };
+	})
+	
+	$(window).on("mousemove", function(event) {
+		if(moveDown != null)  {
+			update_draggable(event.pageX - moveDown.x, event.pageY - moveDown.y);
+		}
+	})
+	
+	$(window).on("mouseup", function(event) {
+		if(moveDown) {
+			if(out_blank($s.offset())) { $d.click(); return; };
+			
+			var offset = $s.offset();
+			Config.changeEditable(anchor, offset.left - $("#blank").offset().left, offset.top - $("#blank").offset().top, uid, $s.css("color"), parseInt($s.css("font-size")), $s.text());
+		}
+		
+		moveDown = null;
+	});
 };
+
+$(window).on("load", function() {
+	var shadow = $("#text-editor-shadow");
+	shadow.css("display", "flex");
+	
+	var picker = $("#editor-color-picker");
+	var bgColorPicker = new ColorPicker(picker);
+	bgColorPicker.onColorPicked = function(color) {
+	
+	};
+	
+	shadow.hide().on("click", function(event) {
+		if(event.target == this) {
+			$(this).fadeOut();
+		}	
+	});
+})

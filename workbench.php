@@ -11,6 +11,9 @@
        <style id="fonts"></style>
     </head>
 	<body>
+		<div id="loading-block">
+			<img id="loading-image" src="/img/loading.png"/>
+		</div>
 	    <div id="header">
 	       <img id="logo" src="/img/logo.png"/>
 	        <div id="sign-controls">
@@ -18,6 +21,7 @@
                 <a id="second-ctrl-link" href="#signin"><img id="second-ctrl-img" alt="Sign in" src="/img/user/sign_in.png"/></a>
             </div>
             <div id="loading-tools">
+                <a href="#new"><img src="/img/tools/add.png"/></a>
                 <img src="/img/tools/upload.png"/>
                 <img src="/img/tools/download.png"/>
             </div>
@@ -38,11 +42,21 @@
 	           
 	       </div>
 	    </div>
+	    <div id="text-editor-shadow">
+		    <div id="text-editor">
+		    	<input type="text" id="editor-input"/>
+		    	<div id="editor-color-picker"></div>
+		    	<select id="editor-font"></select>
+		    	<input type="number" id="editor-text-size"/>
+		    	<button id="editor-submit">OK</button>
+		    </div>
+		</div>
 	    <script src="js/jquery.js"></script>
         <script src="js/workbench/type_list.js"></script>
        	<script src="js/workbench/views.js"></script>
         <script src="js/workbench/color_picker.js"></script>
         <script src="js/workbench/config.js"></script>
+        <!--  TODO <script src="js/workbench/fullscreen.js"></script> -->
        	<script src="js/auth.js"></script>
         <script src="js/common.js"></script>
         <script src="js/workbench.js"></script>

@@ -25,16 +25,3 @@ $(document).ready(function() {
 /**
  * 
  */
-
-if(document.location.hash) {
-	var method = document.location.hash.split("#")[1];
-	
-	if(method == "signin" || method == "signup") {
-		history.pushState(null, "", "http://mydiploma.ru/" + method);
-		
-		switch(method) {
-			case "signin": /*signin*/ break;
-			case "signup": /*signup*/ break;
-		}
-	}
-}
