@@ -123,7 +123,7 @@ function updateControls() {
     	}, 150);
     }
     
-    CONTROLS_UPDATER = setTimeout(updateControls, 250);
+    CONTROLS_UPDATER = setTimeout(updateControls, 2500);
 }
 
 updateControls();

@@ -63,12 +63,8 @@ ListItem = function(type, uid, width) {
 			
 			if(~type.type.indexOf("static")) {
 				Config.setStatic(type.id, uid);
-			} else {
-				if(~type.type.indexOf("resizable")) {
-					Config.addResizable(type, uid, offset.left, offset.top, width, height, $d.attr("src"));
-				} else if(~type.type.indexOf("editable")) {
-					Config.addEditable(type, uid, offset.left, offset.top, type.file, 24, [0, 0, 0]);
-				}
+			} else if(~type.type.indexOf("resizable")) {
+				Config.addResizable(type, uid, offset.left, offset.top, width, height, $d.attr("src"));
 			}
 		}
 		
@@ -77,6 +73,77 @@ ListItem = function(type, uid, width) {
 };
 
 ListItem.prototype.appendTo = function(root) {
+	root.append(this.$item);
+};
+
+TextListItem = function(type, uid, width) {
+	var $i = this.$item = $("<span class='segment'></span>");
+	var $d = this.$draggable = $("<span class='dragged-segment'></span>");
+	
+	$i.outerWidth(width);
+	$d.outerWidth(width);
+	
+	$("#fonts").text($("#fonts").text() + " @font-face{ font-family: \"" + type.font + "\"; src: url(\"" + font.file + "\");");
+	
+	var update_draggable = function(x, y) {
+		$d.css("top", y).css("left", x);
+	};
+	
+	var out_blank = function(d_off) {
+		var $b = $("#blank");
+		var b_off = $b.offset();
+		
+		if(d_off.left < b_off.left || d_off.top < b_off.top) {
+			return true;
+		}
+		
+		if(d_off.left + $d.width() > b_off.left + $b.width() ||
+		   d_off.top + $d.height() > b_off.top + $b.height()) {
+			return true;
+		}
+		
+		return false;
+	};
+	
+	var down = null;
+	$i.on("mousedown", function(event) {
+		down = { x: event.offsetX, y: event.offsetY };
+		
+		update_draggable(event.pageX - down.x, event.pageY - down.y);
+		$(document.body).append($d);
+	})
+	
+	$(window).on("mousemove", function(event) {
+		if(down != null)  {
+			update_draggable(event.pageX - down.x, event.pageY - down.y);
+		}
+	})
+	
+	$(window).on("mouseup", function(event) {
+		var offset = $d.offset();
+		var width = $d.width(), height = $d.height();
+		$d.fadeOut(200, function() {
+			$d.offset({ top: 0, left: 0 });
+			$d.remove();
+			$d.fadeIn();
+		});
+		
+		if(down) {
+			if(out_blank(offset)) return;
+			
+			offset.left -= $("#blank").offset().left;
+			offset.top -= $("#blank").offset().top;
+			
+			if(~type.type.indexOf("editable")) {
+				Config.addEditable(type, uid, offset.left, offset.top, type.file, 24, [0, 0, 0]);
+			}
+		}
+		
+		down = null;
+	});
+};
+
+TextListItem.prototype.appendTo = function(root) {
 	root.append(this.$item);
 };
 

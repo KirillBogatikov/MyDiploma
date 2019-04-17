@@ -2,6 +2,7 @@
  * 
  */
 SEGMENT_TYPES = [];
+TYPE_LISTS = [];
 
 callRemoteFunction("types", "list", {}, function(types) {
 	SEGMENT_TYPES = types.body;
@@ -11,11 +12,16 @@ callRemoteFunction("types", "list", {}, function(types) {
 	for(var i in SEGMENT_TYPES) {
 		var type = SEGMENT_TYPES[i];
 		var list = new TypeList(type);
-		list.load();
 		list.appendTo($("#segments"));
+		
+		TYPE_LISTS.push(list);
 	}
 	
 	TypeList.MAX_HEIGHT = $("#segments").height() - $(".segment-container").outerHeight(true) * SEGMENT_TYPES.length;
+	
+	for(var i in TYPE_LISTS) {
+		TYPE_LISTS[i].load();
+	}
 });
 
 window.ondragstart = function() { return false; };
