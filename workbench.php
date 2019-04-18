@@ -46,9 +46,11 @@
 		    <div id="text-editor">
 		    	<input type="text" id="editor-input"/>
 		    	<div id="editor-color-picker"></div>
-		    	<select id="editor-font"></select>
-		    	<input type="number" id="editor-text-size"/>
-		    	<button id="editor-submit">OK</button>
+		    	<div id="editor-controls">
+		    		<select id="editor-font"></select>
+		    		<input type="number" id="editor-text-size"/>
+		    		<button id="editor-submit">OK</button>
+		    	</div>
 		    </div>
 		</div>
 	    <script src="js/jquery.js"></script>

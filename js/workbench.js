@@ -59,6 +59,14 @@ $(window).on("load", function() {
 		Config.setBackground(color);
 	};
 	
+	callRemoteFunction("segments", "list", { type: "text" }, function(data) {
+		data = data.body;
+		for(var i in data) {
+			$("#fonts").text($("#fonts").text() + " @font-face{ font-family: \"" + data[i].font + "\"; src: url(\"" + data[i].file + "\"); } ");
+			var item = $("<option value='" + JSON.stringify(data[i]) + "'>" + data[i].font + "</option>");
+			$("#editor-font").append(item);
+		}
+	});
 });
 
 $(window).bind("onanchorclick", function(event, click, anchor) {

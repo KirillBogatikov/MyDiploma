@@ -83,7 +83,6 @@ TextListItem = function(type, uid, width) {
 	$i.outerWidth(width);
 	$d.outerWidth(width);
 	
-	$("#fonts").text($("#fonts").text() + " @font-face{ font-family: \"" + uid.font + "\"; src: url(\"" + uid.file + "\"); } ");
 	$i.css("font-family", uid.font).css("font-size", "24pt");
 	$d.css("font-family", uid.font).css("font-size", "24pt");
 	

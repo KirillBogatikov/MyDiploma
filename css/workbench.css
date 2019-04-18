@@ -158,22 +158,67 @@ SPAN.segment {
 }
 
 #text-editor {
-	width: 50%;
+	width: 33%;
 	margin: auto;
 	padding: 15px;
 	border-radius: 30px;
 	
 	background: #FCF0BD;
-	box-shadow: 0px 0px 10px black;
+	box-shadow: 0px 0px 20px black;
 }
 
 #editor-input {
 	width: 98%;
 	padding: 1%;
-	font-size: 18pt;
+	font-size: 20pt;
+	border-radius: 30px;
+	border: solid 3px #120A8F;
+	color: #120A8F;
+	background: #F9E8A2;
 }
 
 #editor-color-picker {
 	width: 33%;
 	padding: 1%;
+	display: inline-block;
+}
+
+#editor-controls {
+	width: 62%;
+	padding: 1%;
+	display: inline-block;
+}
+
+#editor-font {
+	width: 73%;
+	padding: 1%;
+	font-size: 12pt;
+	border-radius: 30px;
+	border: solid 3px #120A8F;
+	color: #120A8F;
+	background: #F9E8A2;
+	display: inline-block;
+}
+
+#editor-text-size {
+	width: 23%;
+	padding: 1%;
+	font-size: 12pt;
+	border-radius: 30px;
+	border: solid 3px #120A8F;
+	color: #120A8F;
+	background: #F9E8A2;
+	display: inline-block;
+	text-align: center;
+}
+
+#editor-submit {
+	padding: 1%;
+	font-size: 12pt;
+	border-radius: 30px;
+	border: solid 3px #120A8F;
+	color: #120A8F;
+	background: #F9E8A2;
+	display: inline-block;
+	text-align: center;
 }

@@ -63,7 +63,6 @@ Config = {
 					}
 				} else if(~type.type.indexOf("editable")) {
 					var list = Config.__current[type.id];
-					console.log(list);
 					for(var i in list) {
 						Config.__show_editable(i+1, type.id, list[i].uid, list[i].x * width, list[i].y * height, list[i].color, list[i].size, list[i].value);
 					}

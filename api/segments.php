@@ -22,7 +22,9 @@
 			$list = $list->listNames("*.png", false);	
 		}
 		
-		$list = array_slice($list, $offset, $length);
+		if(isset($offset)) {
+			$list = array_slice($list, $offset, $length);
+		}
 		return $list;
 	}
 	
