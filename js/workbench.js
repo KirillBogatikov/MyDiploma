@@ -17,7 +17,7 @@ callRemoteFunction("types", "list", {}, function(types) {
 		TYPE_LISTS.push(list);
 	}
 	
-	TypeList.MAX_HEIGHT = $("#segments").height() - $(".segment-container").outerHeight(true) * SEGMENT_TYPES.length;
+	TypeList.MAX_HEIGHT = $("#segments").height() - $(".segment-container").outerHeight(true) * (SEGMENT_TYPES.length+1);
 	
 	for(var i in TYPE_LISTS) {
 		TYPE_LISTS[i].load();
@@ -53,7 +53,7 @@ $(window).on("load", function() {
 		.width(scale * 210).height(scale * 297)
 		.css("margin-top", ($bench.height() - scale * 297) / 2);
 
-	var picker = $("#background-color");
+	var picker = $("#bgcolor-picker");
 	var bgColorPicker = new ColorPicker(picker);
 	bgColorPicker.onColorPicked = function(color) {
 		Config.setBackground(color);
@@ -63,10 +63,16 @@ $(window).on("load", function() {
 		data = data.body;
 		for(var i in data) {
 			$("#fonts").text($("#fonts").text() + " @font-face{ font-family: \"" + data[i].font + "\"; src: url(\"" + data[i].file + "\"); } ");
-			var item = $("<option value='" + JSON.stringify(data[i]) + "'>" + data[i].font + "</option>");
-			$("#editor-font").append(item);
+			/*var item = $("<option value='" + JSON.stringify(data[i]) + "'>" + data[i].font + "</option>");
+			item.css("font-family", data[i].font);
+			$("#editor-font").append(item);*/
 		}
 	});
+	
+	var OBJ = {};
+	initExpandable($("#bgcolor-title"), $("#bgcolor-content"), function(){ return $("#bgcolor-container").width() }, OBJ);
+	
+	te = new TextEditor($("#options"), OBJ);
 });
 
 $(window).bind("onanchorclick", function(event, click, anchor) {

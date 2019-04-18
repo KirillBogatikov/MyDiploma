@@ -4,6 +4,7 @@ ColorPicker = function(parent) {
 	var height = $r.width();
 	
 	var $c = this.$circle = $("<canvas></canvas>");
+	$c.width(width).height("100%");
 	$r.append($c);
 	
 	$c.attr("width", width).attr("height", height);
@@ -15,7 +16,7 @@ ColorPicker = function(parent) {
 	};
 	$img.src = "/img/color_ring.png";
 	
-	var $s = this.$selector = $("<div></div>");
+	/*var $s = this.$selector = $("<div></div>");
 	$s.css("background", "white")
 	  .css("border", "solid 1px black")
 	  .css("position", "absolute")
@@ -25,7 +26,7 @@ ColorPicker = function(parent) {
 	  .css("left", $c.offset().left + width / 2);
 	
 	$r.append($s);
-	
+	*/
 	var MOUSE_DOWN = false;
 	var thiz = this;
 
@@ -35,7 +36,7 @@ ColorPicker = function(parent) {
 		var circleOffset = $c.offset();
 		
 		if(color[3] == 255) {
-			$s.offset({ top: circleOffset.top + y - 2, left: circleOffset.left + x - 2});
+			//$s.offset({ top: circleOffset.top + y - 2, left: circleOffset.left + x - 2});
 			thiz.onColorPicked(color);
 			return true;
 		}

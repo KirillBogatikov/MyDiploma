@@ -1,3 +1,26 @@
+function initExpandable(view, list, height, object) {
+	var ex = false;
+	view.on("click", function() {
+		var h = 0;
+		if(ex) {
+			ex = false;
+			object.currentExpanded = null;
+			
+		} else {
+			h = height();
+			ex = true;
+			
+			var exp = object.currentExpanded;
+			if(exp && exp[0] != view[0]) {
+				exp.click();
+			}	
+			object.currentExpanded = view;
+		}
+		
+		list.animate({ height: h });
+	});
+}
+
 TypeList = function(type) {
 	this.type = type;
 	var $r = this.$root = $("<div class='segment-container'></div>");
@@ -5,25 +28,7 @@ TypeList = function(type) {
 	var $l = this.$list = $("<div class='segment-list'></div>");
 	$r.append($s).append($l);
 	
-	var ex = false;
-	$s.on("click", function() {
-		var h = 0;
-		if(ex) {
-			ex = false;
-			TypeList.currentExpanded = null;
-		} else {
-			h = TypeList.MAX_HEIGHT;
-			ex = true;
-			
-			var exp = TypeList.currentExpanded; 
-			if(exp && exp[0] != $s[0]) {
-				exp.click();
-			}	
-			TypeList.currentExpanded = $s;
-		}
-		
-		$l.animate({ height: h });
-	});
+	initExpandable($s, $l, function(){ return TypeList.MAX_HEIGHT; }, TypeList);
 	
 	var thiz = this;
 	$l.on("scroll", function() {

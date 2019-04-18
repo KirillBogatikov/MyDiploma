@@ -28,9 +28,11 @@
         </div>
 	    <div id="content">
 	       <div id="options">
-	           <div id="background-color-container">
-		           <span>Цвет бумаги:</span>
-		           <div id="background-color"></div>
+	           <div id="bgcolor-container">
+		           <span id="bgcolor-title">Цвет бумаги</span>
+		           <div id="bgcolor-content">
+		               <div id="bgcolor-picker"></div>
+		           </div>
 		       </div>
 	       </div>
 	       <div id="bench">
@@ -42,23 +44,13 @@
 	           
 	       </div>
 	    </div>
-	    <div id="text-editor-shadow">
-		    <div id="text-editor">
-		    	<input type="text" id="editor-input"/>
-		    	<div id="editor-color-picker"></div>
-		    	<div id="editor-controls">
-		    		<select id="editor-font"></select>
-		    		<input type="number" id="editor-text-size"/>
-		    		<button id="editor-submit">OK</button>
-		    	</div>
-		    </div>
-		</div>
 	    <script src="js/jquery.js"></script>
         <script src="js/workbench/type_list.js"></script>
        	<script src="js/workbench/views.js"></script>
         <script src="js/workbench/color_picker.js"></script>
         <script src="js/workbench/config.js"></script>
-        <!--  TODO <script src="js/workbench/fullscreen.js"></script> -->
+        <script src="js/workbench/nice_input.js"></script>
+        <script src="js/workbench/text_editor.js"></script>
        	<script src="js/auth.js"></script>
         <script src="js/common.js"></script>
         <script src="js/workbench.js"></script>

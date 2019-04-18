@@ -32,33 +32,115 @@
     float: left;
 }
 
-#background-color-container {
+#bgcolor-container {
     border-radius: 0px;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     box-shadow: 0px 0px 5px black;
-    margin-bottom: 2%;
+    margin-bottom: 5%;
     padding: 0px;
-    padding-bottom: 1%;
+    padding-bottom: 2%;
     background: #F7D962;
 }
 
-#background-color-container > DIV {
+#bgcolor-title {
+    background: #F7D962;
+    border-radius: 0px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    width: 94%;
+    padding: 3%;
+    padding-bottom: 1%;
+    display: block;
+    text-align: center;
+}
+
+#bgcolor-content {
+	height: 0px;
 	background: #F9E389;
-	width: 90%;
-    padding: 5%;
+	width: 100%;
     border-radius: 0px;
     border-bottom-right-radius: 20px;
 }
 
-#background-color-container > SPAN {
-    background: #F7D962;
+#bgcolor-picker {
+	padding: 5%;
+	width: 90%;
+	height: 90%;
+}
+
+#texteditor-container[disabled] {
+	background: #C0C0C0;
+	color: black;
+	box-shadow: 0px 0px 3px black;
+	opacity: 0.5;
+}
+
+#texteditor-container[disabled] #texteditor-title {
+	background: #C0C0C0;
+}
+
+#texteditor-container {
     border-radius: 0px;
     border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: 0px 0px 5px black;
+    margin-bottom: 5%;
+    padding: 0px;
+    padding-bottom: 2%;
+    background: #F7D962;
+}
+
+#texteditor-title {
+	background: #F7D962;
+    border-radius: 0px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
     width: 94%;
     padding: 3%;
+    padding-bottom: 1%;
     display: block;
     text-align: center;
+}
+
+#texteditor-div {
+	background: #F9E389;
+    width: 100%;
+    height: 0px;
+    border-radius: 0px;
+    border-bottom-right-radius: 20px;
+}
+
+#texteditor-input {
+	margin-top: 5%;
+	background: #FCF0BD;
+	border: solid 3px #120A8F;
+	color: #120A8F;
+    border-radius: 30px;
+    padding: 8px;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 125%;
+    width: 100%;
+    
+    display: block;
+    position: relative;
+}
+
+#texteditor-picker {
+    width: 90%;
+    height: 90%;
+    padding: 5%;	
+}
+
+#texteditor-controls {
+}
+
+#texteditor-size > IMG {
+    width: 20px;
+}
+
+#texteditor-size {
 }
 
 #bench {
@@ -86,7 +168,7 @@
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
 	box-shadow: 0px 0px 5px black;
-	margin-bottom: 2%;
+	margin-bottom: 3%;
 	padding: 0px;
 	padding-bottom: 1%;
     background: #F7D962;
@@ -144,81 +226,4 @@ SPAN.segment {
 .editable-item {
 	display: block;
 	position: absolute;
-}
-
-#text-editor-shadow {
-	width: 100%;
-	height: 100%;
-	display: none;
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 11;
-}
-
-#text-editor {
-	width: 33%;
-	margin: auto;
-	padding: 15px;
-	border-radius: 30px;
-	
-	background: #FCF0BD;
-	box-shadow: 0px 0px 20px black;
-}
-
-#editor-input {
-	width: 98%;
-	padding: 1%;
-	font-size: 20pt;
-	border-radius: 30px;
-	border: solid 3px #120A8F;
-	color: #120A8F;
-	background: #F9E8A2;
-}
-
-#editor-color-picker {
-	width: 33%;
-	padding: 1%;
-	display: inline-block;
-}
-
-#editor-controls {
-	width: 62%;
-	padding: 1%;
-	display: inline-block;
-}
-
-#editor-font {
-	width: 73%;
-	padding: 1%;
-	font-size: 12pt;
-	border-radius: 30px;
-	border: solid 3px #120A8F;
-	color: #120A8F;
-	background: #F9E8A2;
-	display: inline-block;
-}
-
-#editor-text-size {
-	width: 23%;
-	padding: 1%;
-	font-size: 12pt;
-	border-radius: 30px;
-	border: solid 3px #120A8F;
-	color: #120A8F;
-	background: #F9E8A2;
-	display: inline-block;
-	text-align: center;
-}
-
-#editor-submit {
-	padding: 1%;
-	font-size: 12pt;
-	border-radius: 30px;
-	border: solid 3px #120A8F;
-	color: #120A8F;
-	background: #F9E8A2;
-	display: inline-block;
-	text-align: center;
 }

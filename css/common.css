@@ -62,6 +62,67 @@ BODY {
     position: relative;
 }
 
+.nice-input-container {
+    width: 100%;
+    margin: 7px;
+    padding: 10px;
+
+    text-align: center;
+
+    border: solid 3px #FDD212;
+    border-radius: 15px;
+
+    background: inherit;
+}
+
+.nice-input-container * {
+	height: 100%;
+}
+
+.nice-input-container[ui-focused] {
+    border-color: #120A8F;
+    color: #120A8F;
+}
+
+.nice-input-container[ui-invalid] {
+    border-color: #FF1500;
+    color: #BF0C00;
+}
+
+.nice-input-input {
+    width: 100%;
+    font-size: 85%;
+
+    border: solid 0px white;
+    background: inherit;
+    color: inherit;
+}
+
+.nice-input-hint {
+    width: auto;
+    position: absolute;
+    font-size: 100%;
+    background: inherit;
+    color: rgba(18, 10, 143, 0.75);
+}
+
+.nice-input-hint[shifted] {
+    color: #FDD212;
+}
+
+.nice-input-hint[shifted][ui-focused] {
+    color: #120A8F;
+}
+
+.nice-input-hint[ui-invalid] {
+    color: inherit;
+}
+
+.nice-input-hint[ui-invalid][shifted] {
+    color: #FF1500;
+}
+
+
 @keyframes sign-control-rotation {
     to {
        transform: rotate(360deg);

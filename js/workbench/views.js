@@ -305,20 +305,3 @@ Editable = function(anchor, uid, x, y, color, size, value) {
 		moveDown = null;
 	});
 };
-
-$(window).on("load", function() {
-	var shadow = $("#text-editor-shadow");
-	shadow.css("display", "flex");
-	
-	var picker = $("#editor-color-picker");
-	var bgColorPicker = new ColorPicker(picker);
-	bgColorPicker.onColorPicked = function(color) {
-	
-	};
-	
-	shadow.hide().on("click", function(event) {
-		if(event.target == this) {
-			$(this).fadeOut();
-		}	
-	});
-})
