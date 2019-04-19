@@ -1,6 +1,15 @@
 /**
  * 
  */
+
+String.prototype.replaceAll = function(a, b) {
+	var s = this.toString();
+	while(s.indexOf(a) != -1) {
+		s = s.replace(a, b);
+	}
+	return s;
+};
+
 function callRemoteFunction(group, name, data, listener, type) {
 	data["method"] = name;
 	

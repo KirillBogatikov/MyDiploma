@@ -64,7 +64,11 @@ Config = {
 				} else if(~type.type.indexOf("editable")) {
 					var list = Config.__current[type.id];
 					for(var i in list) {
-						Config.__show_editable(i+1, type.id, list[i].uid, list[i].x * width, list[i].y * height, list[i].color, list[i].size, list[i].value);
+						var color = [];
+						for(var j in list[i].color) {
+							color.push(list[i].color[j]);
+						}
+						Config.__show_editable(parseInt(i)+1, type.id, list[i].uid, list[i].x * width, list[i].y * height, color, list[i].size, list[i].value);
 					}
 				}
 			}
@@ -76,7 +80,21 @@ Config = {
 		} else {
 			localStorage.setItem("config-uid", this.__current.uid);
 			
-			callRemoteFunction("config", "save", { uid: this.__current.uid, config: this.__current }, function(data) {});	
+			var config = {};
+			for(var i in this.__current) {
+				if(typeof this.__current[i] == 'object') {
+					config[i] = [];
+					for(var j in this.__current[i]) {
+						if(this.__current[i][j]) {
+							config[i].push(this.__current[i][j]);
+						}
+					}
+				} else {
+					config[i] = this.__current[i];
+				}
+			}
+			
+			callRemoteFunction("config", "save", { uid: this.__current.uid, config: config }, function(data) {});	
 		}
 	},
 	setStatic: function(type, uid) {
@@ -165,7 +183,8 @@ Config = {
 	},
 	remove: function(anchor) {
 		var type = this.__current[anchor.type];
-		this.__current[anchor.type] = type.slice(0, anchor.index).concat(type.slice(anchor.index + 1)); 
+		//this.__current[anchor.type] = type.slice(0, anchor.index).concat(type.slice(anchor.index + 1));
+		delete this.__current[anchor.type][anchor.index];
 		Config.save();
 	},
 	setBackground: function(color) {

@@ -1,3 +1,5 @@
+LOADING_VIEWS = -1;
+
 ListItem = function(type, uid, width) {
 	var $i = this.$item = $("<img class='segment'/>");
 	var $d = this.$draggable = $("<img class='dragged-segment'/>");
@@ -151,6 +153,7 @@ TextListItem.prototype.appendTo = function(root) {
 };
 
 Resizable = function(type, uid, x, y, width, height, anchor, defSrc) {
+	LOADING_VIEWS++;
 	x += $("#blank").offset().left;
 	y += $("#blank").offset().top;
 	
@@ -166,6 +169,7 @@ Resizable = function(type, uid, x, y, width, height, anchor, defSrc) {
 	var xhr = callRemoteFunction("segments", "load", { type: type, uid: uid }, function() {
 		var blob = URL.createObjectURL(xhr.response);
 		$i.attr("src", blob);
+		LOADING_VIEWS--;
 	}, "blob");
 	
 	var update_draggable = function(x, y) {
@@ -254,13 +258,46 @@ Editable = function(anchor, uid, x, y, color, size, value) {
 	x += $("#blank").offset().left;
 	y += $("#blank").offset().top;
 	
-	$s = this.$span = $("<span class='editable-item'>" + value + "</span>");
+	var $s = this.$span = $("<span class='editable-item'>" + value.replaceAll("\n", "<br/>") + "</span>");
 	$s.offset({ top: y, left: x });
 	$(document.body).append($s);
 	
-	$s.css("font-family", uid.font).css("font-size", "24pt");
-	$s.on("dblclick", function() {
+	$s.css("font-family", uid.font).css("font-size", size + "pt");
+	$s.css("color", "rgba(" + color.join(",") + ")");
+	$s.css("text-align", "center");
+	
+	var CURRENT_COLOR = color;
+	$s.on("click", function() {
+		Options.textColorPicker.onColorPicked = function(color) {
+			Config.changeEditable(anchor, FIELD_NOT_CHANGED, FIELD_NOT_CHANGED, FIELD_NOT_CHANGED, color, FIELD_NOT_CHANGED, FIELD_NOT_CHANGED);
+			$s.css("color", "rgba(" + color.join(",") + ")");
+			CURRENT_COLOR = color;
+		};
+		Options.textFont.val(JSON.stringify(uid));
+		Options.textFont[0].onchange = function() {
+			var font = JSON.parse(Options.textFont.val());
+			Config.changeEditable(anchor, FIELD_NOT_CHANGED, FIELD_NOT_CHANGED, font, FIELD_NOT_CHANGED, FIELD_NOT_CHANGED, FIELD_NOT_CHANGED);
+			$s.css("font-family", font.font);
+		};
+		Options.textValue.val($s.html().replaceAll("<br>", "\n"));
+		Options.textValue[0].onkeyup = Options.textValue[0].onchange = function(event) {
+			Config.changeEditable(anchor, FIELD_NOT_CHANGED, FIELD_NOT_CHANGED, FIELD_NOT_CHANGED, FIELD_NOT_CHANGED, FIELD_NOT_CHANGED, Options.textValue.val());
+			$s.html(Options.textValue.val().replaceAll("\n", "<br/>"));
+		};
+		Options.textSize.val(size);
+		Options.textSize[0].onkeyup = Options.textSize[0].onchange = function(event) {
+			Config.changeEditable(anchor, FIELD_NOT_CHANGED, FIELD_NOT_CHANGED, FIELD_NOT_CHANGED, FIELD_NOT_CHANGED, Options.textSize.val(), FIELD_NOT_CHANGED);
+			$s.css("font-size", Options.textSize.val() + "pt");
+		} ;
+		Options.textDelete[0].onclick = function() {
+			Config.remove(anchor);
+			$s.fadeOut(400, function() {
+				$s.remove();
+			});
+		};
 		$("#text-editor-shadow").fadeIn();
+		
+		$("#texteditor-title").click();
 	});
 	
 	var update_draggable = function(x, y) {
@@ -285,21 +322,29 @@ Editable = function(anchor, uid, x, y, color, size, value) {
 	
 	var moveDown = null;
 	$s.on("mousedown", function(event) {
+		event.preventDefault();
+		
 		moveDown = { x: event.offsetX, y: event.offsetY };
-	})
+	});
 	
 	$(window).on("mousemove", function(event) {
 		if(moveDown != null)  {
 			update_draggable(event.pageX - moveDown.x, event.pageY - moveDown.y);
 		}
-	})
+	});
 	
 	$(window).on("mouseup", function(event) {
 		if(moveDown) {
-			if(out_blank($s.offset())) { $d.click(); return; };
+			if(out_blank($s.offset())) {
+				$s.fadeOut(400, function() {
+					$s.remove();
+				});
+				Config.remove(anchor);
+				return;
+			};
 			
 			var offset = $s.offset();
-			Config.changeEditable(anchor, offset.left - $("#blank").offset().left, offset.top - $("#blank").offset().top, uid, $s.css("color"), parseInt($s.css("font-size")), $s.text());
+			Config.changeEditable(anchor, offset.left - $("#blank").offset().left, offset.top - $("#blank").offset().top, uid, FIELD_NOT_CHANGED, FIELD_NOT_CHANGED, FIELD_NOT_CHANGED);
 		}
 		
 		moveDown = null;

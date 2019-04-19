@@ -4,6 +4,8 @@
 SEGMENT_TYPES = [];
 TYPE_LISTS = [];
 
+$("#loading-block").css("display", "flex").fadeIn();
+
 callRemoteFunction("types", "list", {}, function(types) {
 	SEGMENT_TYPES = types.body;
 	
@@ -22,6 +24,15 @@ callRemoteFunction("types", "list", {}, function(types) {
 	for(var i in TYPE_LISTS) {
 		TYPE_LISTS[i].load();
 	}
+	
+	var f = function() {
+		if(LOADING_VIEWS != -1) {
+			setTimeout(f, 333);
+		} else {
+			$("#loading-block").fadeOut();
+		}
+	};
+	f();
 });
 
 window.ondragstart = function() { return false; };
@@ -63,16 +74,37 @@ $(window).on("load", function() {
 		data = data.body;
 		for(var i in data) {
 			$("#fonts").text($("#fonts").text() + " @font-face{ font-family: \"" + data[i].font + "\"; src: url(\"" + data[i].file + "\"); } ");
-			/*var item = $("<option value='" + JSON.stringify(data[i]) + "'>" + data[i].font + "</option>");
+			var item = $("<option value='" + JSON.stringify(data[i]) + "'>" + data[i].font + "</option>");
 			item.css("font-family", data[i].font);
-			$("#editor-font").append(item);*/
+			$("#texteditor-font").append(item);
 		}
 	});
 	
-	var OBJ = {};
-	initExpandable($("#bgcolor-title"), $("#bgcolor-content"), function(){ return $("#bgcolor-container").width() }, OBJ);
+	Options = {};
+	initExpandable($("#bgcolor-title"), $("#bgcolor-content"), function(){ return $("#bgcolor-container").width() }, Options);
 	
-	te = new TextEditor($("#options"), OBJ);
+	Options.textColorPicker = new ColorPicker($("#texteditor-picker"));
+	Options.textValue = $("#texteditor-value");
+	Options.textSize = $("#texteditor-size");
+	Options.textFont = $("#texteditor-font");
+	Options.textDelete = $("#texteditor-delete");
+	
+	$("#texteditor-submit").on("click", function() {
+		$("#texteditor-title").click();
+		Options.textColorPicker.onColorPicked = function(color) {};
+		Options.textFont[0].onchange = function() {};
+		Options.textValue[0].onkeyup = Options.textValue[0].onchange = function(event) {};
+		Options.textSize[0].onkeyup = Options.textSize[0].onchange = function(event) {};
+		Options.textDelete[0].onclick = function() {};
+	});
+	
+	var ctrl = $("#texteditor-controls").width();
+	$("#texteditor-font").outerWidth(ctrl * 0.7-5).outerHeight(35);
+	$("#texteditor-size").outerWidth(ctrl * 0.3).outerHeight(35);
+	
+	var H = $("#texteditor-content").height(); 
+	initExpandable($("#texteditor-title"), $("#texteditor-content"), function(){ return H; }, Options);
+	$("#texteditor-content").outerHeight(0);
 });
 
 $(window).bind("onanchorclick", function(event, click, anchor) {

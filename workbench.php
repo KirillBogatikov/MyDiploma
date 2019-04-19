@@ -34,6 +34,19 @@
 		               <div id="bgcolor-picker"></div>
 		           </div>
 		       </div>
+		       <div id="texteditor-container">
+		       	   <span id="texteditor-title">Настройки текста</span>
+		       	   <div id="texteditor-content"><div>
+		       	   	   <textarea placeholder="Текст" id="texteditor-value"></textarea>
+		       	   	   <div id="texteditor-picker"></div>
+		       	   	   <div id="texteditor-controls">
+		       	   	       <select id="texteditor-font"></select>
+		       	   	       <input placeholder="Размер текста" type="number" id="texteditor-size"/>
+		       	   	       <button id="texteditor-delete">Удалить</button>
+		       	   	       <button id="texteditor-submit">OK</button>
+		       	   	   </div>
+		       	   </div></div>
+		       </div>
 	       </div>
 	       <div id="bench">
 	           <div id="blank">
