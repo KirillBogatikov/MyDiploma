@@ -87,6 +87,11 @@
 			case "create": $response["body"] = createCfg(); break;	
 			case "load": $response["body"] = loadCfg($_POST["uid"]); break;
 			case "save": $response["body"] = saveCfg($_POST["uid"], $_POST["config"]); break;
+			case "draw": 
+				include_once "draw.php";
+				draw($_POST["uid"], $_POST["width"], $_POST["height"]);
+				exit;
+			break;
 			case "remove": $response["code"] = removeCfg($_POST["uid"]); break;
 			case "list": $response["body"]  = listCfg(); break;
 			default: $response["code"] = NO_SUCH_METHOD;

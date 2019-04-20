@@ -29,7 +29,7 @@
 	}
 	
 	function findPathToSegment($type, $uid) {
-		return SEGMENTS_DIR."/$type/$uid.png";
+		return SEGMENTS_DIR."$type/$uid.png";
 	}
 	
 	function loadSegment($type, $uid, $width, $height) {

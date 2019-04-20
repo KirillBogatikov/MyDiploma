@@ -10,6 +10,10 @@ String.prototype.replaceAll = function(a, b) {
 	return s;
 };
 
+$(window).on("load", function() {
+	$("#content").css("margin-top", $("#header").outerHeight(true))
+})
+
 function callRemoteFunction(group, name, data, listener, type) {
 	data["method"] = name;
 	

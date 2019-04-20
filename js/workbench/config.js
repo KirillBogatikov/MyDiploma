@@ -68,7 +68,7 @@ Config = {
 						for(var j in list[i].color) {
 							color.push(list[i].color[j]);
 						}
-						Config.__show_editable(parseInt(i)+1, type.id, list[i].uid, list[i].x * width, list[i].y * height, color, list[i].size, list[i].value);
+						Config.__show_editable(parseInt(i)+1, type.id, list[i].uid, list[i].x * width, list[i].y * height, color, list[i].size * $("#blank").width(), list[i].value);
 					}
 				}
 			}
@@ -175,7 +175,7 @@ Config = {
 		if(color != FIELD_NOT_CHANGED) 
 			type[anchor.index].color = color;
 		if(size != FIELD_NOT_CHANGED) 
-			type[anchor.index].size = size;
+			type[anchor.index].size = size / $("#blank").width();
 		if(value != FIELD_NOT_CHANGED) 
 			type[anchor.index].value = value;	 
 		
