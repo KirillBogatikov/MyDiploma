@@ -26,6 +26,7 @@
 		}
 		
 		function toObject() {
+			if($this->result->num_rows == 0) return null;
 			return (object)$this->result->fetch_assoc();
 		}
 		

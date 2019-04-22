@@ -23,10 +23,13 @@ callRemoteFunction("user", "read", {}, function(data) {
 	surname.$input.val(user.surname).attr("spellcheck", false);
 	surname.$input.focus();
 	surname.$input.blur();
+	
+	$("#save").on("click", function() {
+		save(login, name, surname);
+	});
 });
 
 callRemoteFunction("config", "list", {}, function(data) {
-	console.log(data);
 	if(data.code != RFC_SUCCESS) return;
 
 	var cfgs = data.body;
@@ -40,7 +43,6 @@ callRemoteFunction("config", "list", {}, function(data) {
 });
 
 callRemoteFunction("user", "uploads", {}, function(data) {
-	console.log(data);
 	if(data.code != RFC_SUCCESS) return;
 
 	var upls = data.body;
@@ -94,8 +96,89 @@ function viewWork(cfg) {
 	}, "blob"); 
 }
 
-function save() {
+function save(login, name, surname) {
+	var error = $("#error");
+	callRemoteFunction("user", "save", { name: name.$input.val(), surname: surname.$input.val(), login: login.$input.val() }, function(response) {
+		if(response.code == RFC_SUCCESS) {
+			error.html("Изменение сохранены");
+			return;
+		}
+		
+		switch(response.body.login) {
+			case USER_INVALID:
+				error.html("Логин может содержать символы латинского алавита, цифры, символ @ и символ подчеркивания<br/>");
+				login.invalidate(true);
+			break;
+			case USER_INVALID_SHORT:
+				error.html("Логин должен содержать 4 и более символа<br/>");
+				login.invalidate(true);
+			break;
+			case USER_INVALID_LONG:
+				error.html("Логин должен содержать менее 16 символов<br/>");
+				login.invalidate(true);
+			break;
+		}
+		switch(response.body.name) {
+			case USER_INVALID:
+				error.html(error.html() + "Имя может содержать только символы русского и латинского алфавитов<br/>");
+				name.invalidate(true);
+			break;
+			case USER_INVALID_SHORT:
+				error.html(error.html() + "Имя должно содержать более 1 символа<br/>");
+				name.invalidate(true);
+			break;
+			case USER_INVALID_LONG:
+				error.html(error.html() + "Имя должно содержать менее 32 символов<br/>");
+				name.invalidate(true);
+			break;
+		}
+		switch(response.body.surname) {
+			case USER_INVALID:
+				error.html(error.html() + "Фамилия может содержать только символы русского и латинского алфавитов<br/>");
+				surname.invalidate(true);
+			break;
+			case USER_INVALID_SHORT:
+				error.html(error.html() + "Фамилия должна содержать более 1 символа<br/>");
+				surname.invalidate(true);
+				break;
+			case USER_INVALID_LONG:
+				error.html(error.html() + "Фамилия должна содержать менее 32 символов<br/>");
+				surname.invalidate(true);
+			break;
+		}
+	});
+}
+
+function deleteUser() {
+	var shadow = $('<div class="sign-shadow"></div>');
+	shadow.css("font-size", "75%");
+	$(document.body).append(shadow);
 	
+	var container = $('<div class="sign-container"></div>');
+	shadow.append(container);
+	var title = $('<div class="sign-title">Удаление</div>');
+	container.append(title);
+	
+	var text = $("<span>Вы уверены, что хотите удалить аккаунт? Отменить это действие будет не возможно</span>");
+	container.append(text);
+	
+	var ok = $("<button class='sign-submit'>Да</button>");
+	ok.on("click", function() {
+		callRemoteFunction("user", "delete", {}, function(response) {
+			console.log(response.code)
+		});
+	});
+	container.append(ok);
+	
+	var cancel = $("<button class='sign-submit'>Отмена</button>");
+	container.append(cancel);
+	shadow.on("click", function(event) {
+		if(event.target == shadow[0] || event.target == cancel[0] || event.target == ok[0]) {
+			shadow.fadeOut(200, function() {
+				shadow.remove();
+			});
+		}
+	});
 }
 
 function viewUpload(uid) {

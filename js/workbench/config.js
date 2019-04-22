@@ -9,7 +9,7 @@ Config = {
 		
 		if(currentRole() == USER_ROLE_GUEST) {
 			var data = localStorage.getItem("config");
-			if(data) {
+			if(data && data != "null") {
 				Config.__current = JSON.parse(data);
 				this.__import();
 				return;
@@ -21,7 +21,7 @@ Config = {
 		var uid = document.location.search.replace("?", "");
 		if(uid == "") {
 			uid = localStorage.getItem("config-uid");
-			if(!uid) {
+			if(!uid || uid == null) {
 				Config.create();
 				return;	
 			}

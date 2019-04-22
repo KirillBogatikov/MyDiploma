@@ -2,27 +2,35 @@
  * 
  */
 function signin(login, password) {
+	var R;
 	callRemoteFunction("auth", "signin", {
 		login: login,
-		password: password
+		password: password,
+		async: false
 	}, function(response) {
 		$(window).trigger("onsignin", [response.code, response.body]);
 		if(response.code == RFC_SUCCESS)
 			$(window).trigger("onrolechange");
+		R = response;
 	});
+	return R;	
 }
 
 function signup(login, password, name, surname) {
+	var R;
 	callRemoteFunction("auth", "signup", {
 		login: login,
 		password: password,
 		name: name,
-		surname: surname
+		surname: surname,
+		async: false
 	}, function(response) {
 		$(window).trigger("onsignup", [response.code, response.body]);
 		if(response.code == RFC_SUCCESS)
 			$(window).trigger("onrolechange");
+		R = response;
 	});
+	return R;
 }
 
 function signout() {
@@ -40,7 +48,7 @@ function currentRole() {
 	});
 	return role;
 }
-
+/*
 $(window).bind("onanchorclick", function(event, click, anchor) {
 	if(anchor.startsWith("sign")) {
 		click.preventDefault();
@@ -50,4 +58,4 @@ $(window).bind("onanchorclick", function(event, click, anchor) {
 			case "signout": signout(); break;
 		}
 	}
-});
+});*/

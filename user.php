@@ -47,8 +47,14 @@
 					<td id="surname"></td>
 				</tr>
 				<tr>
+					<td colspan="2" id="error"></td>
+				</tr>
+				<tr>
 					<td id="password"><button>Сменить пароль</button></td>
-					<td id="save"><button onclick="save()">Сохранить</button></td>
+					<td><button id="save">Сохранить</button></td>
+				</tr>
+				<tr>
+					<td colspan='2'><button onclick="deleteUser()" id="delete">Удалить</button></td>
 				</tr>
 			</table>
 			<h1>Ваши работы</h1>

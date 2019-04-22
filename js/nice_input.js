@@ -31,7 +31,7 @@ NiceInput = function(parent, hint, type) {
 		$h.animate({
 			top: -$i.outerHeight(true) - $h.outerHeight(true) / 1.5,
 			left: $c.css("padding-left")
-		});
+		}, 200);
 	});
 	$i.on("blur", function() {
 		$c.removeAttr("focused");
@@ -42,12 +42,16 @@ NiceInput = function(parent, hint, type) {
 			$h.animate({
 				top: -$i.outerHeight(true),
 				left: 0
-			});
+			}, 200);
 		}
 	});
+	var thiz = this;
+	$i.on("keyup", function() {
+		thiz.invalidate(false);
+	})
 };
 
-NiceInput.prototype.invalid = function(inv) {
+NiceInput.prototype.invalidate = function(inv) {
     if(inv) {
         this.$container.attr("invalid", true);
         this.$input.attr("invalid", true);

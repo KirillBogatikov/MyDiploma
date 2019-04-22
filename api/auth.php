@@ -25,14 +25,11 @@
 			$user = $mysql->toObject();
 			
 			$hash = md5(md5($password));
-		} else /*if(isset($_COOKIE[AUTH_COOKIE_ID]) && isset($_COOKIE[AUTH_COOKIE_HASH])) {
-			$user = findUserById($_COOKIE[AUTH_COOKIE_ID]);
-			$hash = $_COOKIE[AUTH_COOKIE_HASH];
-		} else */{
+		} else {
 			return AUTH_NO_COOKIE;
 		}
 		
-		if(!$user) {
+		if($user == NULL) {
 			return AUTH_NO_USER;
 		}
 		
@@ -82,7 +79,8 @@
 				
 				return RFC_SUCCESS;
 			} else {
-				return USER_LOGIN_BUSY;	
+				return USER_LOGIN_BUSY;
+				return -1;
 			}
 		} else {
 			return $response;

@@ -55,14 +55,14 @@
 #user-info > .container {
 	width: 50%;
 }
-
+/*
 #works-block {
 	width: 94%;
 	padding: 3%;
 	border-radius: 30px;
 	box-shadow: 0px 0px 15px black; 
 	background: #F9E8A2;
-}
+}*/
 
 #works {
 	width: 100%;
@@ -78,14 +78,14 @@
 #works-images > * {
 	margin-right: 10px;
 }
-
+/*
 #uploads-block {
     width: 94%;
     padding: 3%;
     border-radius: 30px;
     box-shadow: 0px 0px 15px black; 
     background: #F9E8A2;
-}
+}*/
 
 #uploads {
     width: 100%;
@@ -100,6 +100,10 @@
 
 #uploads-images > * {
     margin-right: 10px;
+}
+
+#error {
+	font-size: 50%;
 }
 
 .lock-window {

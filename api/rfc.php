@@ -13,6 +13,7 @@
 			case "signup":
 				$r = signup($_POST["login"], $_POST["password"], $_POST["name"], $_POST["surname"]);
 				if(gettype($r) == "array") {
+					$response["code"] = RFC_FAIL;
 					$response["body"] = $r; 
 				} else {
 					$response["code"] = $r;
@@ -102,13 +103,22 @@
 		switch($_POST["method"]) {
 			case "exists": $response["code"] = isUserExists($_POST["login"]); break;
 			case "read": $response["body"] = readUser(isset($_POST["id"]) ? $_POST["id"] : currentID()); break;
-			case "save": $response["body"] = saveUser(
-				isset($_POST["login"]) ? $_POST["login"] : FIELD_NOT_CHANGED,
-				isset($_POST["old_password"]) ? $_POST["old_password"] : FIELD_NOT_CHANGED,
-				isset($_POST["new_password"]) ? $_POST["new_password"] : FIELD_NOT_CHANGED,
-				isset($_POST["name"]) ? $_POST["name"] : FIELD_NOT_CHANGED,
-				isset($_POST["surname"]) ? $_POST["surname"] : FIELD_NOT_CHANGED
-			); break;
+			case "save": 
+				$r = saveUser(
+					isset($_POST["login"]) ? $_POST["login"] : FIELD_NOT_CHANGED,
+					isset($_POST["old_password"]) ? $_POST["old_password"] : FIELD_NOT_CHANGED,
+					isset($_POST["new_password"]) ? $_POST["new_password"] : FIELD_NOT_CHANGED,
+					isset($_POST["name"]) ? $_POST["name"] : FIELD_NOT_CHANGED,
+					isset($_POST["surname"]) ? $_POST["surname"] : FIELD_NOT_CHANGED
+				);
+				
+				if(gettype($r) == 'array') {
+					$response["code"] = RFC_FAIL;
+					$response["body"] = $r;
+				} else {
+					$response["code"] = $r;
+				}
+			break;
 			case "delete": $response["body"] = deleteUser(isset($_POST["id"]) ? $_POST["id"] : currentID()); break;
 			case "configs": $response["body"] = listConfigs(isset($_POST["id"]) ? $_POST["id"] : currentID()); break;
 			case "uploads": $response["body"] = listUploads(isset($_POST["id"]) ? $_POST["id"] : currentID()); break;
