@@ -11,11 +11,11 @@
        <style id="fonts"></style>
     </head>
 	<body>
-		<div id="loading-block">
-			<img id="loading-image" src="/img/loading.png"/>
+		<div class="loading-block" id="loading-block">
+			<img class="loading-image" id="loading-image" src="/img/loading.png"/>
 		</div>
 	    <div id="header">
-	       <img id="logo" src="/img/logo.png"/>
+	        <a href="/"><img id="logo" src="/img/logo.png"/></a>
 	        <div id="sign-controls">
                 <a id="first-ctrl-link" href="#signup"><img id="first-ctrl-img" alt="Sign up" src="/img/user/sign_up.png"/></a>
                 <a id="second-ctrl-link" href="#signin"><img id="second-ctrl-img" alt="Sign in" src="/img/user/sign_in.png"/></a>

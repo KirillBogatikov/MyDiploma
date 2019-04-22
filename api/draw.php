@@ -55,12 +55,24 @@
 		$size = ((int)$size)/1;
 		$font = "..".($uid->file);
 		$cl = imagecolorallocate($image->image, $color[0], $color[1], $color[2]);
-		$bounds = imageftbbox($size, 0.0, $font, $value);
+		
+		$lines = explode("\n", $value);
+		$bounds = imageftbbox($size, 0.0, $font, $lines[0]);
 		
 		$x += abs($bounds[0]);
 		$y += abs($bounds[5]) + abs($bounds[7]);
 		
-		imageTtfText($image->image, $size, 0, $x, $y, $cl, $font, $value);
+		$w = abs($bounds[2] - $bounds[0]);
+		$h = abs($bounds[7] - $bounds[1]);
+		
+		foreach($lines as $text) {
+			$b = imagettfbbox($size, 0.0, $font, $text);
+			
+			$lw = abs($b[2] - $b[0]);
+			
+			imagettftext($image->image, $size, 0.0, $x + ($w - $lw) / 2, $y, $cl, $font, $text);
+			$y += $h*1.25;
+		}
 	}
 	
 	function drawResizable($image, $type, $uid, $x, $y, $width, $height) {

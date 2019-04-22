@@ -21,6 +21,8 @@ HTML, BODY {
 
 * {
 	outline: 0;
+    font-family: Stylo;
+    font-size: 105%;
 }
 
 BODY {
@@ -117,4 +119,42 @@ BODY {
 	padding-bottom: 0px;
 	position: relative;
     font-size: 15pt;
+}
+
+.loading-block {
+    position: fixed;
+    z-index: 9;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    background: rgba(0, 0, 0, 0.85);
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    
+}
+
+.loading-image {
+    width: 10%;
+    margin: auto;
+    height: auto;
+    animation: loading 1s infinite linear;
+}
+
+@keyframes loading {
+    from { 
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+#loading-tools {
+    position: relative;
+    height: 100%;
+    float: right;
+    padding-left: 20px;
+    cursor: pointer;
 }

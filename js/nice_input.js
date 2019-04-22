@@ -18,10 +18,15 @@ NiceInput = function(parent, hint, type) {
 		$i.focus();
 	});
 
-	$i.on("focus", function() {
-		$c.attr("focused", true);
-		$i.attr("focused", true);
-		$h.attr("focused", true);
+	$i.on("focus", function(event) {
+		if($i.attr("readonly")) {
+			event.preventDefault();
+		} else {
+			$c.attr("focused", true);
+			$i.attr("focused", true);
+			$h.attr("focused", true);
+		}
+		
 		
 		$h.animate({
 			top: -$i.outerHeight(true) - $h.outerHeight(true) / 1.5,
