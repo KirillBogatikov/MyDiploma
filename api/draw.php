@@ -6,7 +6,12 @@
 		include_once 'types.php';
 		include_once 'segments.php';
 	
-		$cfg = get_object_vars(loadCfg($uid));
+		if(gettype($uid) == "array") {
+			$cfg = $uid;
+			$uid = $uid["uid"];
+		} else {
+			$cfg = get_object_vars(loadCfg($uid));
+		}
 		$types = listTypes();
 		
 		$bgcolor = $cfg["bgcolor"];

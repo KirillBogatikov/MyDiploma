@@ -29,31 +29,41 @@ callRemoteFunction("user", "read", {}, function(data) {
 	});
 });
 
-callRemoteFunction("config", "list", {}, function(data) {
-	if(data.code != RFC_SUCCESS) return;
+var LOADING_IMAGES = 0;
+var LOCK = new ModalWindow();
+LOCK.show();
 
-	var cfgs = data.body;
-	if(cfgs.length == 0) {
-		$("#works-images").append("У Вас еще нет ниодной работы").width("100%");
-	}
+function loadUserData() {
+	callRemoteFunction("config", "list", {}, function(data) {
+		if(data.code != RFC_SUCCESS) return;
 	
-	for(var i in cfgs) {
-		viewWork(cfgs[i]);
-	}
-});
-
-callRemoteFunction("user", "uploads", {}, function(data) {
-	if(data.code != RFC_SUCCESS) return;
-
-	var upls = data.body;
-	if(upls.length == 0) {
-		$("#uploads-images").append("Вы не загружали файлы").width("100%");
-	}
+		var cfgs = data.body;
+		if(cfgs.length == 0) {
+			$("#works-images").append("У Вас еще нет ниодной работы").width("100%");
+		} else {
+			LOADING_IMAGES += cfgs.length;
+		}
+		
+		for(var i in cfgs) {
+			viewWork(cfgs[i]);
+		}
+	});
 	
-	for(var i in upls) {
-		viewWork(upls[i]);
-	}
-});
+	callRemoteFunction("user", "uploads", {}, function(data) {
+		if(data.code != RFC_SUCCESS) return;
+	
+		var upls = data.body;
+		if(upls.length == 0) {
+			$("#uploads-images").append("Вы не загружали файлы").width("100%");
+		} else {
+			LOADING_IMAGES += upls.length;
+		}
+		
+		for(var i in upls) {
+			viewWork(upls[i]);
+		}
+	});
+}
 
 var THUMB_WIDTH, THUMB_HEIGHT;
 
@@ -66,33 +76,48 @@ $(window).on("load", function() {
 	THUMB_HEIGHT = THUMB_WIDTH * 297 / 210;
 	$("#works-images").height(THUMB_HEIGHT);
 	$("#uploads-images").height(THUMB_HEIGHT);
+	
+	loadUserData();
+	
+	var check = function() {
+		if(LOADING_IMAGES == 0) {
+			LOCK.hide();
+		} else {
+			setTimeout(check, 500);
+		}
+	};
+	check();
 });
 
 function viewWork(cfg) {
 	var xhr = callRemoteFunction("config", "draw", { uid: cfg, width: THUMB_WIDTH, height: THUMB_HEIGHT }, function(data) {
 		var blob = URL.createObjectURL(xhr.response);
-
-		var container = $("<div style='display: inline-block'></div>");
-		container.width(THUMB_WIDTH).height(THUMB_HEIGHT);
-		
-		var lock = $("<div class='lock-window' inline></div>");
-		lock.width(THUMB_WIDTH).height(THUMB_HEIGHT);
-		var lockImg = $("<img src='/img/loading.png' class='lock-loading'/>");
-		lock.append(lockImg);
-		container.append(lock);
-		
 		var img = $("<img src='" + blob + "'/>");
 		img.on("load", function() { 
-			lock.fadeOut(400, function(){ 
-    			lock.remove(); 
-        		img.hide();
-        		container.append(img);
-        		img.fadeIn();
-        	}); 
+			LOADING_IMAGES--;
         });
 		
-		$("#works-images").append(container);
+		$("#works-images").append(img);
+		(function(img, uid){
+			img.on("click", function() {
+				document.location.href = "/workbench.php?" + uid;
+			});
+		})(img, cfg);
 		$("#works-images").outerWidth($("#works-images").width() + THUMB_WIDTH + 10);
+	}, "blob"); 
+}
+
+function viewUpload(uid) {
+	var xhr = callRemoteFunction("user", "upload", { uid: uid, width: THUMB_WIDTH, height: THUMB_HEIGHT }, function(data) {
+		var blob = URL.createObjectURL(xhr.response);
+
+		var img = $("<img src='" + blob + "'/>");
+		img.on("load", function() { 
+			LOADING_IMAGES--;
+        });
+		
+		$("#uploads-images").append(img);
+		$("#uploads-images").outerWidth($("#uploads-images").width() + THUMB_WIDTH + 10);
 	}, "blob"); 
 }
 
@@ -100,7 +125,13 @@ function save(login, name, surname) {
 	var error = $("#error");
 	callRemoteFunction("user", "save", { name: name.$input.val(), surname: surname.$input.val(), login: login.$input.val() }, function(response) {
 		if(response.code == RFC_SUCCESS) {
-			error.html("Изменение сохранены");
+			error.html("Изменения сохранены");
+			setTimeout(function() {
+				error.fadeOut(400, function() {
+					error.html("");
+					error.fadeIn();
+				});
+			}, 600);
 			return;
 		}
 		
@@ -150,12 +181,10 @@ function save(login, name, surname) {
 }
 
 function deleteUser() {
-	var shadow = $('<div class="sign-shadow"></div>');
-	shadow.css("font-size", "75%");
-	$(document.body).append(shadow);
-	
 	var container = $('<div class="sign-container"></div>');
-	shadow.append(container);
+	var window = new ModalWindow(container);
+	window.show();
+	
 	var title = $('<div class="sign-title">Удаление</div>');
 	container.append(title);
 	
@@ -165,46 +194,75 @@ function deleteUser() {
 	var ok = $("<button class='sign-submit'>Да</button>");
 	ok.on("click", function() {
 		callRemoteFunction("user", "delete", {}, function(response) {
-			console.log(response.code)
+			document.location.href = "/";
 		});
 	});
 	container.append(ok);
 	
 	var cancel = $("<button class='sign-submit'>Отмена</button>");
-	container.append(cancel);
-	shadow.on("click", function(event) {
-		if(event.target == shadow[0] || event.target == cancel[0] || event.target == ok[0]) {
-			shadow.fadeOut(200, function() {
-				shadow.remove();
-			});
-		}
+	cancel.on("click", function() {
+		window.hide();
 	});
+	container.append(cancel);
+	
 }
 
-function viewUpload(uid) {
-	var xhr = callRemoteFunction("user", "upload", { uid: uid, width: THUMB_WIDTH, height: THUMB_HEIGHT }, function(data) {
-		var blob = URL.createObjectURL(xhr.response);
-
-		var container = $("<div style='display: inline-block'></div>");
-		container.width(THUMB_WIDTH).height(THUMB_HEIGHT);
-		
-		var lock = $("<div class='lock-window' inline></div>");
-		lock.width(THUMB_WIDTH).height(THUMB_HEIGHT);
-		var lockImg = $("<img src='/img/loading.png' class='lock-loading'/>");
-		lock.append(lockImg);
-		container.append(lock);
-		
-		var img = $("<img src='" + blob + "'/>");
-		img.on("load", function() { 
-			lock.fadeOut(400, function(){ 
-    			lock.remove(); 
-        		img.hide();
-        		container.append(img);
-        		img.fadeIn();
-        	}); 
-        });
-		
-		$("#uploads-images").append(container);
-		$("#uploads-images").outerWidth($("#uploads-images").width() + THUMB_WIDTH + 10);
-	}, "blob"); 
+function changePassword() {
+	var $c = $('<div class="sign-container"></div>');
+	var window = new ModalWindow($c);
+	window.show();
+	
+	var title = $('<div class="sign-title">Изменение пароля</div>');
+	$c.append(title);
+	
+	var $m = $('<div class="sign-message"></div>');
+	$c.append($m);
+	
+	var oldPass = new NiceInput($c, "Старый пароль", "password");
+	var newPass = new NiceInput($c, "Новый пароль", "password");
+	
+	var $s = $("<button class='sign-button'>OK</button>");
+	$c.append($s);
+	$s.on("click", function() {
+		$m.html("");
+		callRemoteFunction("user", "save", { old_password: oldPass.$input.val(), new_password: newPass.$input.val() }, function(response) {
+			if(response.code == RFC_SUCCESS) {
+				var error = $("#error");
+				error.html("Изменения сохранены");
+				setTimeout(function() {
+					window.hide();
+					error.fadeOut(400, function() {
+						error.html("");
+						error.fadeIn();
+					});
+				}, 600);
+				return;
+			}
+			
+			switch(response.body.password) {
+				case USER_INVALID:
+					$m.html($m.html() + "Пароль может содержать символы латинского алавита, цифры, символы @, #, $, %, &, +, - и символ подчеркивания<br/>");
+					newPass.invalidate(true);
+				break;
+				case USER_INVALID_SHORT:
+					$m.html($m.html() + "Пароль должен содержать 8 и более символов<br/>");
+					newPass.invalidate(true);
+				break;
+				case USER_INVALID_LONG:
+					$m.html($m.html() + "Пароль должен содержать менее 32 символов<br/>");
+					newPass.invalidate(true);
+				break;
+				case ACCESS_DENIED:
+					$m.html($m.html() + "Старый пароль введен неверно");
+					oldPass.invalidate(true);
+				break;
+			}
+		});
+	});
+	
+	var $l = $("<button class='sign-button'>Отмена</button>");
+	$c.append($l);
+	$l.on("click", function(){
+		window.hide();
+	});
 }

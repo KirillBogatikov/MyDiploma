@@ -55,6 +55,9 @@
 			if($passwordV == USER_VALID) {
 				if($user->hash != md5(md5($old_password))) {
 					$response["password"] = ACCESS_DENIED;
+				} else {
+					$hash = md5(md5($password));
+					setAuthCookie(currentID(), $hash);
 				}
 			}
 		} else {

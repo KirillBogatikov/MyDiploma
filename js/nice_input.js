@@ -3,14 +3,14 @@
  */
 
 NiceInput = function(parent, hint, type) {
-	var $c = this.$container = $("<div class='container'></div>");
+	var $c = this.$container = $("<div class='nice-input-container'></div>");
 	parent.append($c);
 	
-	var $i = this.$input = $("<input class='input' type='" + type + "'/>");
+	var $i = this.$input = $("<input class='nice-input-input' type='" + type + "'/>");
 	$c.append($i);
 	$c.height($i.outerHeight(true));
 	
-	var $h = this.$hint = $("<span class='hint'>" + hint + "</span>");
+	var $h = this.$hint = $("<span class='nice-input-hint'>" + hint + "</span>");
 	$h.css("top", -$i.outerHeight(true));
 	$c.append($h);
 

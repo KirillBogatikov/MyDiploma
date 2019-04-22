@@ -40,7 +40,7 @@ Config = {
 		});
 	},
 	create: function() {
-		callRemoteFunction("config", "create", {}, function(data) {
+		callRemoteFunction("config", "create", { async: false }, function(data) {
 			Config.__current = data.body;
 		});
 	},
@@ -74,25 +74,28 @@ Config = {
 			}
 		}
 	},
+	__export: function() {
+		var config = {};
+		for(var i in this.__current) {
+			if(typeof this.__current[i] == 'object' && this.__current[i].length > 0) {
+				config[i] = [];
+				for(var j in this.__current[i]) {
+					if(this.__current[i][j] && this.__current[i][j] != null) {
+						config[i].push(this.__current[i][j]);
+					}
+				}
+			} else {
+				config[i] = this.__current[i];
+			}
+		}
+		return config;
+	},
 	save: function() {
 		if(currentRole() == USER_ROLE_GUEST) {
-			localStorage.setItem("config", JSON.stringify(this.__current));
+			localStorage.setItem("config", JSON.stringify(this.__export()));
 		} else {
 			localStorage.setItem("config-uid", this.__current.uid);
-			
-			var config = {};
-			for(var i in this.__current) {
-				if(typeof this.__current[i] == 'object') {
-					config[i] = [];
-					for(var j in this.__current[i]) {
-						if(this.__current[i][j]) {
-							config[i].push(this.__current[i][j]);
-						}
-					}
-				} else {
-					config[i] = this.__current[i];
-				}
-			}
+			var config = this.__export();
 			
 			callRemoteFunction("config", "save", { uid: this.__current.uid, config: config }, function(data) {});	
 		}

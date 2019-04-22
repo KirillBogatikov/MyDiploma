@@ -50,7 +50,7 @@
 					<td colspan="2" id="error"></td>
 				</tr>
 				<tr>
-					<td id="password"><button>Сменить пароль</button></td>
+					<td id="password"><button onclick="changePassword()">Сменить пароль</button></td>
 					<td><button id="save">Сохранить</button></td>
 				</tr>
 				<tr>

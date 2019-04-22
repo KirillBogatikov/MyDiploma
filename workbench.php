@@ -11,10 +11,7 @@
        <style id="fonts"></style>
     </head>
 	<body>
-		<div class="loading-block" id="loading-block">
-			<img class="loading-image" id="loading-image" src="/img/loading.png"/>
-		</div>
-	    <div id="header">
+		<div id="header">
 	        <a href="/"><img id="logo" src="/img/logo.png"/></a>
 	        <div id="sign-controls">
                 <a id="first-ctrl-link" href="#signup"><img id="first-ctrl-img" alt="Sign up" src="/img/user/sign_up.png"/></a>
@@ -22,8 +19,8 @@
             </div>
             <div id="loading-tools">
                 <a href="#new"><img src="/img/tools/add.png"/></a>
-                <img src="/img/tools/upload.png"/>
-                <img src="/img/tools/download.png"/>
+                <!-- <img src="/img/tools/upload.png"/> -->
+                <img src="/img/tools/download.png" onclick="download()"/>
             </div>
         </div>
 	    <div id="content">
@@ -41,7 +38,7 @@
 		       	   	   <div id="texteditor-picker"></div>
 		       	   	   <div id="texteditor-controls">
 		       	   	       <select id="texteditor-font"></select>
-		       	   	       <input placeholder="Размер текста" type="number" id="texteditor-size"/>
+		       	   	       <input placeholder="Размер" type="number" id="texteditor-size"/>
 		       	   	       <button id="texteditor-delete">Удалить</button>
 		       	   	       <button id="texteditor-submit">OK</button>
 		       	   	   </div>
@@ -62,9 +59,8 @@
        	<script src="js/workbench/views.js"></script>
         <script src="js/workbench/color_picker.js"></script>
         <script src="js/workbench/config.js"></script>
-        <script src="js/workbench/nice_input.js"></script>
-        <script src="js/workbench/text_editor.js"></script>
-       	<script src="js/auth.js"></script>
+        <script src="js/nice_input.js"></script>
+        <script src="js/auth.js"></script>
         <script src="js/common.js"></script>
         <script src="js/workbench.js"></script>
 	</body>

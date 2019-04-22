@@ -94,11 +94,12 @@
 			$user = $mysql->toObject();
 			
 			if($user->hash != $_COOKIE[AUTH_COOKIE_HASH]) {
-				signout();
+				signout(true);
 			} else {
 				return $user->role == "admin" ? USER_ROLE_ADMIN : USER_ROLE_USER;
 			}
 		} 
+		
 		return USER_ROLE_GUEST;
 	}
 	
@@ -109,8 +110,8 @@
 		return USER_ID_GUEST;
 	}
 	
-	function signout() {
-		if(currentRole() == USER_ROLE_GUEST) {
+	function signout($force=FALSE) {
+		if(!$force && currentRole() == USER_ROLE_GUEST) {
 			return ACCESS_DENIED;
 		}
 		

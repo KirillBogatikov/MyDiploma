@@ -1,7 +1,11 @@
 @CHARSET "UTF-8";
 
+* {
+	font-size: 100%;
+}
+
 #content {
-	
+    font-size: 125%;	
 }
 
 #content > DIV {
@@ -156,8 +160,7 @@
 
 #texteditor-controls > BUTTON {
 	width: 100%;
-	padding: 5%;
-	font-size: 100%;
+	padding: 3%;
 	margin-top: 5%;
 	border: solid 2px #120A8F;
     border-radius: 25px;

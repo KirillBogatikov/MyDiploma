@@ -7,6 +7,10 @@ ListItem = function(type, uid, width) {
 	$i.outerWidth(width);
 	$d.outerWidth(width);
 	
+	$i.on("load", function() {
+		window["LOADING_VIEWS"]--;
+	});
+	
 	var xhr = callRemoteFunction("segments", "load", { type: type.id, uid: uid, width: width }, function(data) {
 		var blob = URL.createObjectURL(xhr.response);
 		
@@ -146,6 +150,8 @@ TextListItem = function(type, uid, width) {
 		
 		down = null;
 	});
+	
+	window["LOADING_VIEWS"]--;
 };
 
 TextListItem.prototype.appendTo = function(root) {

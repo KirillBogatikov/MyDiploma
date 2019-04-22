@@ -50,6 +50,7 @@ TypeList.prototype.load = function() {
 	var width = thiz.$list.width() / 3 - 20;
 	callRemoteFunction("segments", "list", { type: this.type.id, offset: offset, count: Math.ceil(TypeList.MAX_HEIGHT / width) * 2 }, function(response) {
 		var uids = response.body;
+		window["LOADING_VIEWS"] += uids.length;
 		for(var i in uids) {
 			var item;
 			
