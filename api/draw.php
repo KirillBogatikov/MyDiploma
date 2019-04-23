@@ -15,6 +15,7 @@
 		$types = listTypes();
 		
 		$bgcolor = $cfg["bgcolor"];
+		$w = round($w);
 		$image = new Image($w, $h, $bgcolor[0], $bgcolor[1], $bgcolor[2]);
 		$texts = new Image($w, $h, $bgcolor[0], $bgcolor[1], $bgcolor[2]);
 		
@@ -40,7 +41,7 @@
 					drawStatic($image, $type->id, $parts, $w, $h); 
 				} else if(strpos($type->type, "editable") === FALSE) {
 					foreach ($parts as $part) {
-						drawResizable($image, $type->id, $part->uid, $part->x * $w, $part->y * $h, $part->width * $w, $part->height * $h);
+						drawResizable($image, $type->id, $part["uid"], $part["x"] * $w, $part["y"] * $h, $part["width"] * $w, $part["height"] * $h);
 					}
 				}
 			}

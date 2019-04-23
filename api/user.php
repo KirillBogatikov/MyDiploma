@@ -119,7 +119,8 @@
 		}
 		
 		$dir = new File("../users/$id/configs/");
-		return $dir->listNames(".json", false);
+		$d= $dir->listNames("*.json", false);
+		return $d;
 	}
 	
 	function listUsers($request) {

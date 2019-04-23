@@ -188,18 +188,19 @@ function deleteUser() {
 	var title = $('<div class="sign-title">Удаление</div>');
 	container.append(title);
 	
-	var text = $("<span>Вы уверены, что хотите удалить аккаунт? Отменить это действие будет не возможно</span>");
+	var text = $("<div style='font-size:85%'>Вы уверены, что хотите удалить аккаунт? Отменить это действие будет не возможно</div>");
 	container.append(text);
 	
-	var ok = $("<button class='sign-submit'>Да</button>");
+	var ok = $("<button class='sign-button'>Да</button>");
 	ok.on("click", function() {
+		__AUTH_MODAL_WINDOW.show();
 		callRemoteFunction("user", "delete", {}, function(response) {
 			document.location.href = "/";
 		});
 	});
 	container.append(ok);
 	
-	var cancel = $("<button class='sign-submit'>Отмена</button>");
+	var cancel = $("<button class='sign-button'>Отмена</button>");
 	cancel.on("click", function() {
 		window.hide();
 	});

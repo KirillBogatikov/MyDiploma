@@ -6,7 +6,7 @@
 	   <meta name="description" content="Сервис для создания дипломов, грамот, открыток, благодарственных писем">
        <meta name="keywords" content="Дипломы, грамоты, письма, открытки, maker, diploma, charter, letter">
        <link rel="stylesheet" href="css/common.css"/>
-       <link rel="stylesheet" href="css/user.css"/>
+       <link rel="stylesheet" href="css/admin.css"/>
        <link rel="shortcut icon" href="img/favicon.ico"/>
        <style id="fonts"></style>
     </head>
@@ -32,7 +32,12 @@
             </div>
 		</div>
 		<div id="content">
-		
+			<table id="users">
+				<tr><th>ID</th><th>Логин</th><th>Фамилия, имя</th><th>Кол-во работ</th><th>Кол-во файлов</th><th></th></tr>
+			</table>
+			<div id="segments">
+				<select id="type"></select>
+			</div>
 		</div>
 		<script src="js/jquery.js"></script>
        	<script src="js/nice_input.js"></script>

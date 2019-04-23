@@ -38,6 +38,9 @@ function signup(login, password, name, surname) {
 
 function signout() {
 	callRemoteFunction("auth", "signout", {}, function(response) {
+		if(~document.location.href.indexOf("user") || ~document.location.href.indexOf("admin")) {
+			document.location = "/";
+		}
 		__forceUpdateControls();
 	});
 }
@@ -107,5 +110,6 @@ function __updateControls() {
 
 $(window).on("load", function() {
 	__AUTH_MODAL_WINDOW = new ModalWindow();
+	__AUTH_MODAL_WINDOW.$container.css("z-index", 999);
 	__updateControls();
 })

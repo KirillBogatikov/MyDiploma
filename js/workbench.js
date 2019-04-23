@@ -8,34 +8,37 @@ var LOADING_VIEWS = 0;
 var LOCK = new ModalWindow();
 LOCK.show();
 
-callRemoteFunction("types", "list", {}, function(types) {
-	SEGMENT_TYPES = types.body;
-	
-	Config.load();
-	
-	for(var i in SEGMENT_TYPES) {
-		var type = SEGMENT_TYPES[i];
-		var list = new TypeList(type);
-		list.appendTo($("#segments"));
+function loadData() {
+	callRemoteFunction("types", "list", {}, function(types) {
+		SEGMENT_TYPES = types.body;
 		
-		TYPE_LISTS.push(list);
-	}
-	
-	TypeList.MAX_HEIGHT = $("#segments").height() - $(".segment-container").outerHeight(true) * (SEGMENT_TYPES.length+1);
-	
-	for(var i in TYPE_LISTS) {
-		TYPE_LISTS[i].load();
-	}
-	
-	check = function() {
-		if(LOADING_VIEWS == 0) {
-			LOCK.hide();
-		} else {
-			setTimeout(check, 500);
+		Config.load();
+		
+		for(var i in SEGMENT_TYPES) {
+			var type = SEGMENT_TYPES[i];
+			var list = new TypeList(type);
+			list.appendTo($("#segments"));
+			
+			TYPE_LISTS.push(list);
 		}
-	};
-	setTimeout(check, 500);
-});
+		
+		console.log($("#segments").height());
+		TypeList.MAX_HEIGHT = $("#segments").height() - $(".segment-container").outerHeight(true) * (SEGMENT_TYPES.length+1);
+		
+		for(var i in TYPE_LISTS) {
+			TYPE_LISTS[i].load();
+		}
+		
+		check = function() {
+			if(LOADING_VIEWS == 0) {
+				LOCK.hide();
+			} else {
+				setTimeout(check, 500);
+			}
+		};
+		setTimeout(check, 500);
+	});
+}
 
 window.ondragstart = function() { return false; };
 window.onbeforeunload = function(event) { 
@@ -107,6 +110,8 @@ $(window).on("load", function() {
 	var H = $("#texteditor-content").height(); 
 	initExpandable($("#texteditor-title"), $("#texteditor-content"), function(){ return H; }, Options);
 	$("#texteditor-content").outerHeight(0);
+	
+	loadData();
 });
 
 $(window).bind("onanchorclick", function(event, click, anchor) {
@@ -158,6 +163,7 @@ function download() {
 		var xhr = callRemoteFunction("config", "draw", { uid: uid, width: width, height: height }, function(data) {
 			var blob = URL.createObjectURL(xhr.response);
 			$p.attr("src", blob);
+			//console.log(data);
 		}, "blob");
 	};
 	$p.on("load", function() {

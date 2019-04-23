@@ -80,7 +80,6 @@
 				return RFC_SUCCESS;
 			} else {
 				return USER_LOGIN_BUSY;
-				return -1;
 			}
 		} else {
 			return $response;
