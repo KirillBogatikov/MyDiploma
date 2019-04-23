@@ -33,10 +33,22 @@
 		</div>
 		<div id="content">
 			<table id="users">
-				<tr><th>ID</th><th>Логин</th><th>Фамилия, имя</th><th>Кол-во работ</th><th>Кол-во файлов</th><th></th></tr>
+				<tr>
+					<th class="cell" style='border-radius: 0px; border-top-left-radius: 30px'>ID</th>
+					<th class="cell">Логин</th>
+					<th class="cell">Фамилия, имя</th>
+					<th class="cell">Кол-во работ</th>
+					<th class="cell">Кол-во файлов</th>
+					<th style='border-radius: 0px; border-top-right-radius: 30px'>Управление</th>
+				</tr>
 			</table>
 			<div id="segments">
-				<select id="type"></select>
+				<div id="controls">
+					<select id="type"></select>
+					<img class='tool' id='upload' src='/img/tools/upload.png' onclick='uploadSegment()'/>
+					<img class='tool' id='delete' src='/img/tools/delete.png' onclick='deleteSegment()'/>
+				</div>
+				<div id="types"></div>
 			</div>
 		</div>
 		<script src="js/jquery.js"></script>

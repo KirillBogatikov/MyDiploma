@@ -10,6 +10,17 @@
 		return $mysql->result->num_rows === 1;
 	}
 	
+	function makeAdmin($id, $admin) {
+		if(!checkAccess()) {
+			return ACCESS_DENIED;
+		}
+		
+		$role = $admin == "true" ? "admin" : "user";
+		$mysql = new MySQLConnection();
+		$mysql->query("UPDATE @users SET role='$role' WHERE id=$id");
+		return RFC_SUCCESS;
+	}
+	
 	function readUser($id) {
 		if(!checkAccess() && $id != currentID()) {
 			return ACCESS_DENIED;
@@ -98,7 +109,8 @@
 		$mysql = new MySQLConnection();
 		$mysql->query("DELETE FROM @users WHERE id=$id");
 		if($mysql->result) {
-			signout();
+			if($id == currentID())
+				signout();
 			return RFC_SUCCESS;
 		}
 		return RFC_FAIL;
@@ -133,7 +145,7 @@
 		if(isset($request["fields"])) {
 			$query .= $request["fields"];
 		} else {
-			$query .= "*";
+			$query .= "id, login, name, surname, role";
 		}
 		
 		$query .= " FROM @users";

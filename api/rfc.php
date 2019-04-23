@@ -71,14 +71,17 @@
 			case "load":
 				loadSegment($_POST["type"], $_POST["uid"], $_POST["width"], $_POST["height"]);
 				exit;
-			break; 
-			case "upload":
-				$response["code"] = uploadSegment($_POST["type"], $_FILES["image"], isset($_POST["uid"]) ? $_POST["uid"] : -1);
 			break;
 			case "remove":
 				$response["code"] = removeSegment($_POST["type"], $_POST["uid"]);
 			break;
 			default:
+				if(isset($_GET["type"]) && isset($_GET["upload"])) {
+					$response["code"] = uploadSegment($_GET["type"], $_FILES["image"]);
+					break;
+				}
+				
+				var_dump($_POST["method"]);
 				$response["code"] = NO_SUCH_METHOD;
 		}
 	} else if(isset($_GET["config"])) {
@@ -120,6 +123,7 @@
 				}
 			break;
 			case "delete": $response["body"] = deleteUser(isset($_POST["id"]) ? $_POST["id"] : currentID()); break;
+			case "make_admin": makeAdmin($_POST["id"], $_POST["admin"]); break;
 			case "configs": $response["body"] = listConfigs(isset($_POST["id"]) ? $_POST["id"] : currentID()); break;
 			case "uploads": $response["body"] = listUploads(isset($_POST["id"]) ? $_POST["id"] : currentID()); break;
 			case "list": $response["body"] = listUsers($_POST["params"]); break;

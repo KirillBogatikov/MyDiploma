@@ -47,7 +47,6 @@
 			}
 		}
 		
-		$image->save("test.png");
 		$image->out();
 	}
 	

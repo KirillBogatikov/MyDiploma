@@ -15,7 +15,7 @@
 			include_once "api/const.php";
 			include_once "api/auth.php";
 		
-			if(currentRole() == USER_ROLE_GUEST || isset($_POST["id"]) && $_POST["id"] != currentID() && !checkAccess()):
+			if(!checkAccess(USER_ROLE_USER)):
 		?>			
 		<div id="no-access">
 			<div>

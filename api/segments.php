@@ -44,16 +44,15 @@
 		$image->out();
 	}
 	
-	function uploadSegment($type, $file, $uid=-1) {
+	function uploadSegment($type, $file) {
 		if(!checkAccess()) {
 			return ACCESS_DENIED;
 		}
 		
-		if($uid == -1) {
-			$uid = uniqidReal();
-		}
+		$uid = uniqidReal();
+		$path = findPathToSegment($type, $uid);
 		
-		$moved = move_uploaded_file($file, findPathToSegment($type, $uid));
+		$moved = move_uploaded_file($file["tmp_name"], $path);
 		if($moved) {
 			return RFC_SUCCESS;
 		}

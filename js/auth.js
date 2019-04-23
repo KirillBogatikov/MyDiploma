@@ -53,6 +53,14 @@ function currentRole() {
 	return role;
 }
 
+function currentID() {
+	var role;
+	callRemoteFunction("auth", "id", { async: false }, function(response) {
+		role = response.body;
+	});
+	return role;
+}
+
 function __forceUpdateControls() {
 	if(window["CONTROLS_UPDATER"]) {
 		clearTimeout(CONTROLS_UPDATER);

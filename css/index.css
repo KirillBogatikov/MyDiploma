@@ -96,9 +96,15 @@ BODY {
 }
 
 #content {
-    width: 60%;
+    width: 50%;
     max-width: 1000px;
+    font-size: 15pt;
     margin: auto;
+    text-align: justify;
+}
+
+#author {
+	margin-bottom: 10%;
 }
 
 #sign-controls {

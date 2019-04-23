@@ -78,6 +78,10 @@ function callRemoteFunction(group, name, data, listener, type) {
 		async: async
 	}
 	
+	if(data instanceof FormData) {
+		request.processData = false;
+	}
+	
 	if(type == "blob") {
 		request.xhr = function() {
 			XHR = new XMLHttpRequest();
