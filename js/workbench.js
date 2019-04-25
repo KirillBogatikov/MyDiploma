@@ -150,6 +150,7 @@ function download() {
 	var $p = $("<img class='downloading-preview'/>");
 	$c.append($p);
 	$s[0].onchange = function() {
+		$p.fadeOut();
 		$m.fadeIn(200);
 		$d.fadeOut(200);
 		var height = $s.val();
@@ -163,6 +164,7 @@ function download() {
 		var xhr = callRemoteFunction("config", "draw", { uid: uid, width: width, height: height }, function(data) {
 			var blob = URL.createObjectURL(xhr.response);
 			$p.attr("src", blob);
+			$p.fadeIn();
 			//console.log(data);
 		}, "blob");
 	};
@@ -172,7 +174,8 @@ function download() {
 		$d.attr('href', $p.attr('src'));
 	});
 
-	var $d = $("<a download='download.png'><button class='downloading-button'>Скачать</button></a>");
+	$d = $("<a download='download.png'><button class='downloading-button'>Скачать</button></a>");
 	$o.append($d);
+	$d.hide();
 	window.show();
 };

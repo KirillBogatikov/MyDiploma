@@ -41,7 +41,8 @@
 					drawStatic($image, $type->id, $parts, $w, $h); 
 				} else if(strpos($type->type, "editable") === FALSE) {
 					foreach ($parts as $part) {
-						drawResizable($image, $type->id, $part["uid"], $part["x"] * $w, $part["y"] * $h, $part["width"] * $w, $part["height"] * $h);
+						$part = (object)$part;
+						drawResizable($image, $type->id, $part->uid, $part->x * $w, $part->y * $h, $part->width * $w, $part->height * $h);
 					}
 				}
 			}
